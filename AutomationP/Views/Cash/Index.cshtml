@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    int i = 0;
+}
+
+
+<body>
+
+    @Html.Partial("CashPartialView")
+    <div class="cart_check"
+    <div>
+    <form>
+    @{
+        if (ViewBag.Cart != null)
+        {
+
+            foreach (var el in ViewBag.Cart)
+            {
+                <div class="cart_check_one">
+                <div class="row">
+                <div class="col-sm-3">
+                <div class="cart_check_name">@el.Product.Name</div>
+                <div class="cart_check_prise"> <input type="text" class="cart_sellingPrise" name="SellingPriseTextBox" value="@el.Product.SellingPrice" /> </div>
+                </div>
+                <div class="col-sm-3 cart_with_buttons">
+
+
+                <div class="cart_with_buttons_Plus"><input type="button" class="button_in_check" name="SellingPriseP@i" onclick="document.getElementById('Quantity_@i').value = +document.getElementById('Quantity_@i').value+1;" value="+" /></div>
+                <div class="cart_check_count  col-sm-2"><input type="text" onchange="if (+document.getElementById('Quantity_@i').value < 0) document.getElementById('Quantity_@i').value = 0;" class="cart_Quantity" id="Quantity_@i" name="Quantity_@i" value="@el.Quantity" /></div>
+                <div class="cart_with_buttons_Minus"><input type="button" class="button_in_check" name="SellingPriseM@i" onclick="if (+document.getElementById('Quantity_@i').value != 0) document.getElementById('Quantity_@i').value = +document.getElementById('Quantity_@i').value-1;" value="-" /></div>
+                </div>
+                <div class="cart_check_allPrise col-sm-3">@el.Product.SellingPrice*@el.Quantity</div>
+                </div>
+                </div>
+                i++;
+            }
+
+        }
+
+    }
+    </form>
+
+    </div>
+    </div>
+    <script src="~/js/site.js"></script>
+</body>
+

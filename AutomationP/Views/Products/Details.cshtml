@@ -1,0 +1,54 @@
+﻿@model Library.Models.Product
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Product</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Найменування
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+           Артикул
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.VendorCode)
+        </dd>
+        <dt>
+            Штрих код
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BarCode)
+        </dd>
+        <dt>
+           од. виміру
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Units)
+        </dd>
+        <dt>
+            Опис
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
+           Ціна
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SellingPrice)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

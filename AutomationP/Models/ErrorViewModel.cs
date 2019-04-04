@@ -1,6 +1,6 @@
 using System;
 
-namespace AutomationP.Models
+namespace Library.Models
 {
     public class ErrorViewModel
     {
@@ -8,4 +8,11 @@ namespace AutomationP.Models
 
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
     }
+
+
+}
+
+
+namespace AutomationP.Models
+{
 }

@@ -5,70 +5,101 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - AutomationP</title>
 
-    <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" href="~/css/site.css" />
-    </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-    </environment>
-</head>
+
+    </head>
+   
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">AutomationP</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
-    <partial name="_CookieConsentPartial" />
-
-    <div class="container body-content">
+    <div class="Scontent">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2019 - AutomationP</p>
-        </footer>
+    </div>
+    <nav id="menuVertical">
+        <div class="menu-header">
+
+        </div>
+        <ul>
+            <li>
+                <a href="#1">
+                    <div class="img_n"></div><span>Новости</span>
+                </a>
+            </li>
+            <li>
+                <a href="/Cash">
+                    <div class="img_n"></div><span>Каса</span>
+                </a>
+            </li>
+            <li>
+                <a href="#455">
+                    <div class="img_n"></div><span>Точки продажів</span>
+                </a>
+                <ul>
+                    <li><a href="/Products">Рух грошей</a></li>
+                    <li><a href="/Categories">Продажі</a></li>
+                    <li><a href="/Categories">Повернення</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#455">
+                    <div class="img_n"></div><span>Склади</span>
+                </a>
+                <ul>
+                    <li><a href="/Products">Залишки</a></li>
+                    <li><a href="/Categories">Рух товару</a></li>
+                    <li><a href="/IncomingInvoices">Прихідні накладні</a></li>
+                    <li><a href="/Categories">Переміщення</a></li>
+                    <li><a href="/Categories">Списання</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#455">
+                    <div class="img_n"></div><span>Організація</span>
+                </a>
+                <ul>
+                    <li><a href="/Products">Точки продажу</a></li>
+                    <li><a href="/Storages">Склади</a></li>
+                    <li><a href="/Categories">Співробітники</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="#455">
+                    <div class="img_n"></div><span>База</span>
+                </a>
+                <ul>
+                    <li><a href="/Products">Товари і послуги</a></li>
+                    <li><a href="/Categories">Категорії товарів</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="#4">
+                    <div class="img_n"></div><span>Закладки</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="/Account/Logout">
+                    <div class="img_n"></div><span>Выход</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="menu">
+        <div class="footer">
+            Copyright © 2017<br>
+            powered by <a href="#1">
+                <font color="#9dacaa">Новости</font>
+            </a>
+        </div>
     </div>
 
-    <environment include="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
-        </script>
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
-        </script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>
 
     @RenderSection("Scripts", required: false)
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html>

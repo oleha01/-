@@ -1,0 +1,39 @@
+﻿
+<div class="div-cash container">
+    <div class="row">
+        @if (ViewBag.ParentCatName != null)
+        {
+            <div class="col-sm-12 cash-parent-categ blue">
+
+                <a class="" href="/Cash/Category/@ViewBag.ParentCatId" id="cash-href">
+                    <div class="product-wrapper"> @ViewBag.ParentCatName </div>
+                </a>
+            </div>
+        }
+        @foreach (var el in ViewBag.categ)
+        {
+
+            <div class="col-sm-3 cash-bacground">
+                <a class="" href="/Cash/Category/@el.Id" id="cash-href">
+                    <div class="product-wrapper"> @el.Name </div>
+
+                </a>
+            </div>
+
+        }
+        @foreach (var el in ViewBag.prod)
+        {
+
+            <div class="col-sm-3 cash-product">
+                <a class="" href="/Cart/AddToCart/@el.Id" id="cash-href-product">
+                    <div class="product-wrapper"> @el.Name </div>
+
+                </a>
+            </div>
+
+        }
+    </div>
+    <div>
+
+    </div>
+</div>
