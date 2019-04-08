@@ -28,10 +28,9 @@ namespace AutomationP.Controllers
                 tt.AddItem(product, 1);
             }
             //var s = returnUrl.Split('/');
-            
-            HttpContext.Session.Remove("Cart");
-          
-            HttpContext.Session.Set("Cart", tt);
+            string seriz = JsonConvert.SerializeObject(tt);
+            Response.Cookies.Delete("Cart");
+            Response.Cookies.Append("Cart", seriz);
             tt = GetCart();
             return RedirectToAction("Index", "Cash", new { a = 1 });
            // return JsonConvert.SerializeObject(tt).ToString() ;
@@ -51,14 +50,26 @@ namespace AutomationP.Controllers
 
         public Cart GetCart()
         {
-            
-            Cart cart = HttpContext.Session.Get<Cart>("Cart");
+
+            string cart1 = Request.Cookies["Cart"];
+            Cart cart;
+            if (cart1 == null)
+            {
+                cart = new Cart();
+                Response.Cookies.Append("Cart", JsonConvert.SerializeObject(cart)); HttpContext.Session.Set("Cart", cart);
+            }
+            else
+            {
+                cart = JsonConvert.DeserializeObject<Cart>(cart1);
+            }
+            return cart;
+            /*Cart cart = HttpContext.Session.Get<Cart>("Cart");
             if (cart == null)
             {
                 cart = new Cart();
                 HttpContext.Session.Set("Cart", cart);
             }
-            return cart;
+            return cart;*/
         }
     }
 }

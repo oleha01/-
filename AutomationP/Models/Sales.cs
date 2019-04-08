@@ -10,7 +10,8 @@ namespace Library.Models
     {
         public int Id { get; set; }
         public int ProductId { get; set; }
-        virtual public Product Product { get; set; }
+        virtual public List<Product> Product { get; set; }
         public DateTime Date { get; set; }
+        public string Coment { get; set; }
     }
 }

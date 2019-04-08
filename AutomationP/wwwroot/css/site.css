@@ -452,3 +452,7 @@ body {
     margin-left:-10px;
     margin-top:16px;
 }
+
+.cart_button_submit{
+    width:150px;
+}

@@ -20,6 +20,12 @@ namespace AutomationP.Controllers
         {
             _context = context;
         }
+
+        public ActionResult ConfirmCheck()
+        {
+
+            return RedirectToAction("Index","Cash");
+        }
         // GET: Cash
         public ActionResult Index()
         {
@@ -33,12 +39,23 @@ namespace AutomationP.Controllers
             ViewBag.categ = categories;
             ViewBag.prod = products;
             ViewBag.ParentCat = null;
-            Cart cart = HttpContext.Session.Get<Cart>("Cart");
+            /*Cart cart = HttpContext.Session.Get<Cart>("Cart");
             if (cart == null)
             {
                 cart = new Cart();
                 HttpContext.Session.Set("Cart", cart);
 
+            }*/
+            string cart1 = Request.Cookies["Cart"];
+            Cart cart;
+            if (cart1 == null)
+            {
+                cart = new Cart();
+                Response.Cookies.Append("Cart", JsonConvert.SerializeObject(cart));
+            }
+            else
+            {
+                cart = JsonConvert.DeserializeObject<Cart>(cart1);
             }
             ViewBag.Cart = cart.Lines;
             
@@ -61,12 +78,23 @@ namespace AutomationP.Controllers
             ViewBag.prod = products;
             ViewBag.ParentCatName = cat1.Name;
             ViewBag.ParentCatId = _context.Categories.First(p=>p.Name==cat1.ParentCategory.Name).Id;
-            Cart cart = HttpContext.Session.Get<Cart>("Cart");
+            /*Cart cart = HttpContext.Session.Get<Cart>("Cart");
             if (cart == null)
             {
                 cart = new Cart();
                 HttpContext.Session.Set("Cart", cart);
 
+            }*/
+            string cart1 = Request.Cookies["Cart"];
+            Cart cart;
+            if (cart1 == null)
+            {
+                cart = new Cart();
+                Response.Cookies.Append("Cart", JsonConvert.SerializeObject(cart));
+            }
+            else
+            {
+                cart = JsonConvert.DeserializeObject<Cart>(cart1);
             }
             ViewBag.Cart = cart.Lines;
             return View("Index");
