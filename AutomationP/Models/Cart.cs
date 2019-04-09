@@ -25,13 +25,12 @@ namespace Library.Models
             else
             {
                 line.Quantity += quantity;
-                
             }
         }
 
         public void RemoveLine(Product product)
         {
-            lineCollection.RemoveAll(l => l.Product.Id == product.Id);
+           
         }
 
         public decimal ComputeTotalValue()
@@ -49,6 +48,4 @@ namespace Library.Models
             get { return lineCollection; }
         }
     }
-
-  
 }

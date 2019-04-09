@@ -10,53 +10,45 @@ namespace AutomationP.Controllers
 {
     public class CartController : Controller
     {
-        private readonly ProductContext _context;
-        public CartController(ProductContext context)
+        private ProductContext repository;
+        public CartController(ProductContext repo)
         {
-            _context = context;
+            repository = repo;
         }
 
         public RedirectToActionResult AddToCart(int id, string returnUrl)
-        // public string AddToCart(int id, string returnUrl)
         {
-            Product product = _context.Products
-                .FirstOrDefault(p => p.Id == id);
-            Cart tt = null;
+            Product product = repository.Products
+                .FirstOrDefault(g => g.Id == id);
+        
             if (product != null)
-            {
-                tt = GetCart();
-                tt.AddItem(product, 1);
+            {    Cart cart = GetCart();
+                cart.AddItem(product, 1);
+                HttpContext.Session.Set("Cart", cart);
             }
-            //var s = returnUrl.Split('/');
-            
-            HttpContext.Session.Remove("Cart");
-          
-            HttpContext.Session.Set("Cart", tt);
-            tt = GetCart();
-            return RedirectToAction("Index", "Cash", new { a = 1 });
-           // return JsonConvert.SerializeObject(tt).ToString() ;
+            return RedirectToAction("Index","Cash");
         }
 
-        public RedirectToActionResult RemoveFromCart(int productId, string returnUrl)
+        public RedirectToActionResult RemoveFromCart(int id, string returnUrl)
         {
-            Product product = _context.Products
-               .FirstOrDefault(p => p.Id == productId);
+            Product product = repository.Products
+                .FirstOrDefault(g => g.Id == id);
 
             if (product != null)
             {
                 GetCart().RemoveLine(product);
             }
-            return RedirectToAction("Categories", "Home", new { a = 10, h = 12 });
+            return RedirectToAction("Index", "Cash");
         }
 
         public Cart GetCart()
         {
-            
             Cart cart = HttpContext.Session.Get<Cart>("Cart");
             if (cart == null)
             {
                 cart = new Cart();
                 HttpContext.Session.Set("Cart", cart);
+
             }
             return cart;
         }

@@ -21,8 +21,11 @@ namespace AutomationP.Controllers
         // GET: IncomingInvoices
         public async Task<IActionResult> Index()
         {
-            var productContext = _context.IncomingInvoices.Include(i => i.Storage);
-            return View(await productContext.ToListAsync());
+            int id = int.Parse(User.Claims.ToList()[1].Value);
+            var enter = _context.Enterprises.Find(id);
+            var productContext = _context.IncomingInvoices.Where(p => p.Storage.EnterpriseId == id);
+            ViewBag.IncomingInvoice = await productContext.ToListAsync();
+            return View();
         }
 
         // GET: IncomingInvoices/Details/5

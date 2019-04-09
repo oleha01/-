@@ -11,7 +11,9 @@ namespace Library.Models
         public DateTime Date { get; set; }
         public int StorageId { get; set; }
         virtual public Storage Storage { get; set; }
-       virtual public List<Invoice_Product> Invoice_Products { get; set; }
+        virtual public List<Invoice_Product> Invoice_Products { get; set; }
+        public int UserId { get; set; }
+        virtual public User User { get; set; }
 
     }
 }

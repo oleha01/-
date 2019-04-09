@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutomationP.Migrations
 {
     [DbContext(typeof(ProductContext))]
-    [Migration("20190318195315_yyyyyyyyt")]
-    partial class yyyyyyyyt
+    [Migration("20190409144446_newTable")]
+    partial class newTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -143,6 +143,8 @@ namespace AutomationP.Migrations
 
                     b.Property<int>("ParCategoryId");
 
+                    b.Property<int?>("SalesId");
+
                     b.Property<int>("SellingPrice");
 
                     b.Property<string>("Units");
@@ -152,6 +154,8 @@ namespace AutomationP.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ParCategoryId");
+
+                    b.HasIndex("SalesId");
 
                     b.ToTable("Products");
                 });
@@ -201,8 +205,6 @@ namespace AutomationP.Migrations
                     b.Property<int>("ProductId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("Sales");
                 });
@@ -310,6 +312,11 @@ namespace AutomationP.Migrations
                         .WithMany("Products")
                         .HasForeignKey("ParCategoryId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Library.Models.Sales")
+                        .WithMany("Product")
+                        .HasForeignKey("SalesId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Library.Models.Role", b =>
@@ -325,14 +332,6 @@ namespace AutomationP.Migrations
                     b.HasOne("Library.Models.Role")
                         .WithMany("RoleItems")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("Library.Models.Sales", b =>
-                {
-                    b.HasOne("Library.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

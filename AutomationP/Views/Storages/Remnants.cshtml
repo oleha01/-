@@ -1,0 +1,51 @@
+﻿@using AutomationP.Controllers
+@model List<(Storage, List<StructStoragesRemnants>)>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Назва
+            </th>
+            <th>
+                Категорія
+            </th>
+            <th>
+                Склад
+            </th>
+            <th>
+               Кількість
+            </th>
+            <th>
+                Сумма закупки
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            @foreach (var item1 in item.Item2)
+            {
+        <tr>
+            <td>
+                @item1.Item1.Name
+            </td>
+            <td>
+                @item1.Item1.ParCategory.Name
+            </td>
+            <td>
+                @item.Item1.Name
+            </td>
+            <td>
+                @item1.Item2
+            </td>
+        </tr>
+            }
+        }
+    </tbody>
+</table>

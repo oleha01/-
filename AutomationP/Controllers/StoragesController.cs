@@ -9,6 +9,20 @@ using Library.Models;
 
 namespace AutomationP.Controllers
 {
+    public class StructStoragesRemnants
+    {
+        public Product Item1;
+        public int Item2;
+        public StructStoragesRemnants(Product p, int c)
+        {
+            Item1 = p;
+            Item2 = c;
+        }
+        public void ValuePl(int c)
+        {
+            Item2 += c;
+        }
+    }
     public class StoragesController : Controller
     {
         private readonly ProductContext _context;
@@ -17,20 +31,7 @@ namespace AutomationP.Controllers
         {
             _context = context;
         }
-       public class StructStoragesRemnants
-        {
-            public Product Item1;
-           public int Item2;
-           public StructStoragesRemnants(Product p,int c)
-            {
-                Item1 = p;
-                Item2 = c;
-            }
-            public void ValuePl(int c)
-            {
-                Item2 += c;
-            }
-        }
+       
         public async Task<IActionResult> Remnants()
         {
             int IdEnterprise = int.Parse(User.Claims.ToList()[1].Value);
@@ -38,31 +39,32 @@ namespace AutomationP.Controllers
           //  List<IncomingInvoice> listInvoice = await _context.IncomingInvoices.Where(p => p.Storage.EnterpriseId == IdEnterprise).ToListAsync();
             List<Storage> listStorages = await _context.Storages.Where(p => p.EnterpriseId == IdEnterprise).ToListAsync();
             //  List<(Product,Storage, int)> ll = new List<(Product,Storage, int)>();
-            List<List<StructStoragesRemnants>> dict = new List<List<StructStoragesRemnants>>();
+            List<(Storage,List<StructStoragesRemnants>)> dict = new List<(Storage, List<StructStoragesRemnants>)>();
             foreach(var el in listStorages)
             {
                 var el1 = el.IncomingInvoices;
-                dict.Add(new List<StructStoragesRemnants>());
-                foreach(var invoc in el1)
+                dict.Add((el, new List<StructStoragesRemnants>()));
+                foreach (var invoc in el1)
                 {
                   foreach(var prod in invoc.Invoice_Products)
                     {
-                        var product = dict.Last().Where(p => p.Item1.Name == prod.Product.Name && p.Item1.ParCategory.Name == prod.Product.ParCategory.Name).Take(1).ToList();
+                        var product = dict.Last().Item2.Where(p => p.Item1.Name == prod.Product.Name && p.Item1.ParCategory.Name == prod.Product.ParCategory.Name).Take(1).ToList();
                         if(product.Count==0)
                         {
-                            int capacity = prod.Capacity;
-                            dict.Last().Add(new StructStoragesRemnants( product[0].Item1, capacity));
+                            int quantity = prod.Quantity;
+                            dict.Last().Item2.Add(new StructStoragesRemnants( prod.Product, quantity));
                         }
                         else
                         {
-                            product[0].ValuePl(prod.Capacity);
+                            product[0].ValuePl(prod.Quantity);
                             
                         }
                     }
                 }
             }
+            
           //  await productContext.ToListAsync();
-            return View();
+            return View(dict);
         }
         // GET: Storages
         public async Task<IActionResult> Index()

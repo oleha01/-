@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AutomationP.Migrations
 {
-    public partial class @new : Migration
+    public partial class newTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -19,6 +19,20 @@ namespace AutomationP.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Enterprises", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Sales",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ProductId = table.Column<int>(nullable: false),
+                    Date = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sales", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -121,7 +135,8 @@ namespace AutomationP.Migrations
                     ParCategoryId = table.Column<int>(nullable: false),
                     Units = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    SellingPrice = table.Column<int>(nullable: false)
+                    SellingPrice = table.Column<int>(nullable: false),
+                    SalesId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -130,6 +145,12 @@ namespace AutomationP.Migrations
                         name: "FK_Products_Categories_ParCategoryId",
                         column: x => x.ParCategoryId,
                         principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Products_Sales_SalesId",
+                        column: x => x.SalesId,
+                        principalTable: "Sales",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -178,6 +199,26 @@ namespace AutomationP.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "IncomingInvoices",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Date = table.Column<DateTime>(nullable: false),
+                    StorageId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IncomingInvoices", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_IncomingInvoices_Storages_StorageId",
+                        column: x => x.StorageId,
+                        principalTable: "Storages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Point_Storages",
                 columns: table => new
                 {
@@ -204,19 +245,26 @@ namespace AutomationP.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Sales",
+                name: "Invoice_Products",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ProductId = table.Column<int>(nullable: false),
-                    Date = table.Column<DateTime>(nullable: false)
+                    Capacity = table.Column<int>(nullable: false),
+                    IncomingInvoiceId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Sales", x => x.Id);
+                    table.PrimaryKey("PK_Invoice_Products", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Sales_Products_ProductId",
+                        name: "FK_Invoice_Products_IncomingInvoices_IncomingInvoiceId",
+                        column: x => x.IncomingInvoiceId,
+                        principalTable: "IncomingInvoices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Invoice_Products_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
@@ -232,6 +280,21 @@ namespace AutomationP.Migrations
                 name: "IX_Categories_ParentCategoryId",
                 table: "Categories",
                 column: "ParentCategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IncomingInvoices_StorageId",
+                table: "IncomingInvoices",
+                column: "StorageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Invoice_Products_IncomingInvoiceId",
+                table: "Invoice_Products",
+                column: "IncomingInvoiceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Invoice_Products_ProductId",
+                table: "Invoice_Products",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Point_Storages_PointOfSaleId",
@@ -254,6 +317,11 @@ namespace AutomationP.Migrations
                 column: "ParCategoryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Products_SalesId",
+                table: "Products",
+                column: "SalesId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RoleItems_RoleId",
                 table: "RoleItems",
                 column: "RoleId");
@@ -262,11 +330,6 @@ namespace AutomationP.Migrations
                 name: "IX_Roles_EnterpriseId",
                 table: "Roles",
                 column: "EnterpriseId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Sales_ProductId",
-                table: "Sales",
-                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Storages_EnterpriseId",
@@ -282,31 +345,37 @@ namespace AutomationP.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Invoice_Products");
+
+            migrationBuilder.DropTable(
                 name: "Point_Storages");
 
             migrationBuilder.DropTable(
                 name: "RoleItems");
 
             migrationBuilder.DropTable(
-                name: "Sales");
-
-            migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "PointOfSales");
-
-            migrationBuilder.DropTable(
-                name: "Storages");
+                name: "IncomingInvoices");
 
             migrationBuilder.DropTable(
                 name: "Products");
 
             migrationBuilder.DropTable(
+                name: "PointOfSales");
+
+            migrationBuilder.DropTable(
                 name: "Roles");
 
             migrationBuilder.DropTable(
+                name: "Storages");
+
+            migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "Sales");
 
             migrationBuilder.DropTable(
                 name: "Enterprises");

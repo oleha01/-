@@ -1,0 +1,25 @@
+﻿@model IncomingInvoice
+<div class="container rigth_panel_for_somthing incoming_invoice_create">
+    <div class="rigth_panel_topLine">
+
+    </div>
+    <div class="right_panel_content">
+        <form>
+            <div class="row">
+                <div class="one_div_on_right_panel col-sm-6">
+                    <label asp-for="Date">Номер</label>
+                    <input asp-for="Date" type="date" class="in_right_panel" />
+                    <span asp-validation-for="Date" class="text-danger"></span>
+                </div>
+                <div class="one_div_on_right_panel col-sm-6">
+                    <label asp-for="Storage">Склад</label>
+                    <input asp-for="Storage" type="text" class="in_right_panel" />
+                    <span asp-validation-for="Storage" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <p>Товари по нікладній</p>
+            </div>
+        </form>
+    </div>
+</div>
