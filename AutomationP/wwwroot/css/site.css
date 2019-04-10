@@ -484,3 +484,17 @@ body {
 .right_panel_content {
     display:grid;
 }
+
+.top_inputs_in_right_panel {
+    margin-bottom:20px;
+}
+.rigth_panel2_for_somthing {
+    position: fixed;
+    right: 600px;
+    top: 50px;
+    bottom: 0px;
+    min-height: 84vh;
+    width: 600px;
+    background-color: #fff;
+    padding-left: 15px;
+}

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Library.Models;
+using AutomationP.ViewModels;
 
 namespace AutomationP.Controllers
 {
@@ -19,15 +20,53 @@ namespace AutomationP.Controllers
         }
 
         // GET: IncomingInvoices
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int Id=-1)
         {
             int id = int.Parse(User.Claims.ToList()[1].Value);
             var enter = _context.Enterprises.Find(id);
+            var NameCategory = "baseCategory." + enter.Name;
+
+            Category cat1 = null;
+            if(Id != -1)
+            {
+                cat1 = _context.Categories.Find(Id);
+                if(NameCategory != cat1.Name)
+                {
+                    NameCategory = cat1.Name;
+                }
+                else
+                {
+                    cat1 = null;
+                }
+            }
+
             var productContext = _context.IncomingInvoices.Where(p => p.Storage.EnterpriseId == id);
-            ViewBag.IncomingInvoice = await productContext.ToListAsync();
-            return View();
+            ViewBag.IncomingInvoice = new IncomingInvoice();
+            /* var e = new List<Product>();
+             e.Add(new Product { Name = "sadsad" });*/
+            CartClassForInvoice cartClassForInvoice = new CartClassForInvoice("Product_in_InomingInvoice", _context, HttpContext);
+
+            var e = cartClassForInvoice.GetCart().Lines;
+            ViewBag.Products = cartClassForInvoice.GetCart().Lines;
+            var categories = _context.Categories.Where(p => p.EnterpriseId == id && p.ParentCategory.Name == NameCategory).ToList();
+            var products = _context.Products.Where(p => p.ParCategory.EnterpriseId == id && p.ParCategory.Name == NameCategory).ToList();
+            ViewBag.categ = categories;
+            ViewBag.prod = products;
+            if (cat1 != null)
+            {
+                ViewBag.ParentCatName = cat1.Name;
+                ViewBag.ParentCatId = _context.Categories.First(p => p.Name == cat1.ParentCategory.Name).Id;
+            }
+          
+            return View(await productContext.ToListAsync());
         }
 
+        public RedirectToActionResult AddToCart(int id, string returnUrl)
+        {
+            CartClassForInvoice cartClassForInvoice = new CartClassForInvoice("Product_in_InomingInvoice", _context, HttpContext);
+            cartClassForInvoice.AddToCart(id, returnUrl);
+            return RedirectToAction("Index");
+        }
         // GET: IncomingInvoices/Details/5
         public async Task<IActionResult> Details(int? id)
         {

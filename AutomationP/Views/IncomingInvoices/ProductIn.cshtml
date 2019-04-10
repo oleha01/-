@@ -1,2 +1,53 @@
-﻿@model Product
+﻿@model IEnumerable<Library.Models.Invoice_Product>
 
+<div class="legend">
+    <div class="row">
+        <div class="col-sm-4">
+            Найменування
+        </div>
+        <div class="col-sm-4">
+            К-сть
+        </div>
+        <div class="col-sm-2">
+            Ціна
+        </div>
+        <div class="col-sm-2">
+            Сумма
+        </div>
+    </div>
+
+</div>
+
+@foreach (var item in Model)
+{
+    <div class="row">
+        <div class="col-sm-4">
+            <img src="~/images/noImage.png" />
+            <div class="present-text">
+                <a asp-action="Details" asp-route-id="@item.Id">
+                    @item.Product.Name
+                </a>
+            </div>
+        </div>
+
+
+        <div class="col-sm-4">
+            <div class="present-text">
+                @item.Quantity
+            </div>
+
+        </div>
+        <div class="col-sm-2">
+            <div class="present-text">
+                @item.Prise
+            </div>
+
+        </div>
+        <div class="col-sm-2">
+            <div class="present-text">
+                1234
+            </div>
+
+        </div>
+    </div>
+}

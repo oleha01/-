@@ -5,7 +5,7 @@
     </div>
     <div class="right_panel_content">
         <form>
-            <div class="row">
+            <div class="row top_inputs_in_right_panel">
                 <div class="one_div_on_right_panel col-sm-6">
                     <label asp-for="Date">Номер</label>
                     <input asp-for="Date" type="date" class="in_right_panel" />
@@ -20,6 +20,49 @@
             <div class="row">
                 <p>Товари по нікладній</p>
             </div>
+            @await Html.PartialAsync("ProductIn", ViewBag.Products as IEnumerable<Library.Models.Invoice_Product>)
         </form>
+    </div>
+</div>
+
+
+<div class="rigth_panel2_for_somthing">
+    <div class="div-cash container">
+        <div class="row">
+            @if (ViewBag.ParentCatName != null)
+            {
+                <div class="col-sm-12 cash-parent-categ blue">
+
+                    <a class="" href="/IncomingInvoices/Index/@ViewBag.ParentCatId" id="cash-href">
+                        <div class="product-wrapper"> @ViewBag.ParentCatName </div>
+                    </a>
+                </div>
+            }
+            @foreach (var el in ViewBag.categ)
+            {
+
+                <div class="col-sm-3 cash-bacground">
+                    <a class="" href="/IncomingInvoices/Index/@el.Id" id="cash-href">
+                        <div class="product-wrapper"> @el.Name </div>
+
+                    </a>
+                </div>
+
+            }
+            @foreach (var el in ViewBag.prod)
+            {
+
+                <div class="col-sm-3 cash-product">
+                    <a class="" href="/IncomingInvoices/AddToCart/@el.Id" id="cash-href-product">
+                        <div class="product-wrapper"> @el.Name </div>
+
+                    </a>
+                </div>
+
+            }
+        </div>
+        <div>
+
+        </div>
     </div>
 </div>
