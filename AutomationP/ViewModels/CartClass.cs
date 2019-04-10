@@ -46,12 +46,16 @@ namespace AutomationP.ViewModels
 
         public Cart GetCart()
         {
-            Cart cart = httpContext.Session.Get<Cart>(session);
-            if (cart == null)
+            string cart1 = httpContext.Request.Cookies["session"];
+            Cart cart;
+            if (cart1 == null)
             {
                 cart = new Cart();
-                httpContext.Session.Set(session, cart);
-
+                httpContext.Response.Cookies.Append("session", JsonConvert.SerializeObject(cart)); httpContext.Session.Set("Cart", cart);
+            }
+            else
+            {
+                cart = JsonConvert.DeserializeObject<Cart>(cart1);
             }
             return cart;
         }
