@@ -8,6 +8,7 @@
         <div class="col-sm-4">
             К-сть
         </div>
+        
         <div class="col-sm-2">
             Ціна
         </div>
@@ -17,6 +18,7 @@
     </div>
 
 </div>
+@{ int i = 0;}
 
 @foreach (var item in Model)
 {
@@ -31,9 +33,13 @@
         </div>
 
 
-        <div class="col-sm-4">
+        <div class="col-sm-2">
             <div class="present-text">
-                @item.Quantity
+                <div class="cart_with_buttons">
+                    <div class="cart_with_buttons_Plus"><input type="button" class="button_in_check" name="SellingPriseP@i" onclick="document.getElementById('Quantity_@i').value = +document.getElementById('Quantity_@i').value+1;" value="+" /></div>
+                    <div class="cart_check_count  col-sm-2"><input type="text" onchange="if (+document.getElementById('Quantity_@i').value < 0) document.getElementById('Quantity_@i').value = 0;" class="cart_Quantity" id="Quantity_@i" name="Quantity_@i" value="@item.Quantity" /></div>
+                    <div class="cart_with_buttons_Minus"><input type="button" class="button_in_check" name="SellingPriseM@i" onclick="if (+document.getElementById('Quantity_@i').value != 0) document.getElementById('Quantity_@i').value = +document.getElementById('Quantity_@i').value-1;" value="-" /></div>
+                </div>
             </div>
 
         </div>
@@ -51,3 +57,7 @@
         </div>
     </div>
 }
+
+    <div class="right_panel_div_submit">
+        <button asp-action="CreateIncomingInvoice" asp-controller="IncomingInvoices" class="btn-primary right_panel_submit">Створити</button>
+    </div>

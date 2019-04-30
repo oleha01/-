@@ -67,14 +67,25 @@ namespace AuthApp.Controllers
                         Name = "Головний",
                         EnterpriseId = newEnter.Id
                     };
+                    PointOfSale basePoint = new PointOfSale
+                    {
+                        Name = "Основна",
+                        EnterpriseId = newEnter.Id
+                    };
                     Role newRole = new Role
                     {
                         Name = "admin",
                         EnterpriseId = newEnter.Id
                     };
                     db.Roles.Add(newRole);
+                    db.PointOfSales.Add(basePoint);
                     db.Storages.Add(baseStorage);
                   db.SaveChanges();
+                    Point_Storage point_Storage = new Point_Storage
+                    {
+                        PointOfSaleId = basePoint.Id,
+                        StorageId = baseStorage.Id
+                    };
                     User regUser = new User
                     {
                         Email = model.Email,
@@ -82,7 +93,7 @@ namespace AuthApp.Controllers
                         RoleId = newRole.Id,
                         Login = model.EnterpriseName + ".admin"
                     };
-
+                    db.Point_Storages.Add(point_Storage);
                     db.Users.Add(regUser);
                     Category baseCategory = new Category
                     {

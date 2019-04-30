@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AutomationP.Migrations
 {
-    public partial class newTable : Migration
+    public partial class newBase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -19,20 +19,6 @@ namespace AutomationP.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Enterprises", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Sales",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ProductId = table.Column<int>(nullable: false),
-                    Date = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Sales", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -135,8 +121,7 @@ namespace AutomationP.Migrations
                     ParCategoryId = table.Column<int>(nullable: false),
                     Units = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    SellingPrice = table.Column<int>(nullable: false),
-                    SalesId = table.Column<int>(nullable: true)
+                    SellingPrice = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -145,12 +130,6 @@ namespace AutomationP.Migrations
                         name: "FK_Products_Categories_ParCategoryId",
                         column: x => x.ParCategoryId,
                         principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Products_Sales_SalesId",
-                        column: x => x.SalesId,
-                        principalTable: "Sales",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -199,26 +178,6 @@ namespace AutomationP.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "IncomingInvoices",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Date = table.Column<DateTime>(nullable: false),
-                    StorageId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_IncomingInvoices", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_IncomingInvoices_Storages_StorageId",
-                        column: x => x.StorageId,
-                        principalTable: "Storages",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Point_Storages",
                 columns: table => new
                 {
@@ -245,21 +204,78 @@ namespace AutomationP.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Invoice_Products",
+                name: "Sales",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ProductId = table.Column<int>(nullable: false),
-                    Capacity = table.Column<int>(nullable: false),
-                    IncomingInvoiceId = table.Column<int>(nullable: true)
+                    Quantity = table.Column<int>(nullable: false),
+                    Price = table.Column<int>(nullable: false),
+                    Date = table.Column<DateTime>(nullable: false),
+                    PointOfSaleId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sales", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Sales_PointOfSales_PointOfSaleId",
+                        column: x => x.PointOfSaleId,
+                        principalTable: "PointOfSales",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Sales_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "IncomingInvoices",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Date = table.Column<DateTime>(nullable: false),
+                    StorageId = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IncomingInvoices", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_IncomingInvoices_Storages_StorageId",
+                        column: x => x.StorageId,
+                        principalTable: "Storages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_IncomingInvoices_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Invoice_Products",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    InvoiceId = table.Column<int>(nullable: false),
+                    ProductId = table.Column<int>(nullable: false),
+                    Quantity = table.Column<int>(nullable: false),
+                    Prise = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Invoice_Products", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Invoice_Products_IncomingInvoices_IncomingInvoiceId",
-                        column: x => x.IncomingInvoiceId,
+                        name: "FK_Invoice_Products_IncomingInvoices_InvoiceId",
+                        column: x => x.InvoiceId,
                         principalTable: "IncomingInvoices",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -287,9 +303,14 @@ namespace AutomationP.Migrations
                 column: "StorageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Invoice_Products_IncomingInvoiceId",
+                name: "IX_IncomingInvoices_UserId",
+                table: "IncomingInvoices",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Invoice_Products_InvoiceId",
                 table: "Invoice_Products",
-                column: "IncomingInvoiceId");
+                column: "InvoiceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Invoice_Products_ProductId",
@@ -317,11 +338,6 @@ namespace AutomationP.Migrations
                 column: "ParCategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_SalesId",
-                table: "Products",
-                column: "SalesId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_RoleItems_RoleId",
                 table: "RoleItems",
                 column: "RoleId");
@@ -330,6 +346,16 @@ namespace AutomationP.Migrations
                 name: "IX_Roles_EnterpriseId",
                 table: "Roles",
                 column: "EnterpriseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Sales_PointOfSaleId",
+                table: "Sales",
+                column: "PointOfSaleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Sales_ProductId",
+                table: "Sales",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Storages_EnterpriseId",
@@ -354,28 +380,28 @@ namespace AutomationP.Migrations
                 name: "RoleItems");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Sales");
 
             migrationBuilder.DropTable(
                 name: "IncomingInvoices");
 
             migrationBuilder.DropTable(
-                name: "Products");
-
-            migrationBuilder.DropTable(
                 name: "PointOfSales");
 
             migrationBuilder.DropTable(
-                name: "Roles");
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "Storages");
 
             migrationBuilder.DropTable(
+                name: "Users");
+
+            migrationBuilder.DropTable(
                 name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "Sales");
+                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "Enterprises");

@@ -39,6 +39,9 @@ namespace AutomationP
                 .AddCookie(options => //CookieAuthenticationOptions
                 {
                     options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+                    options.Cookie.HttpOnly = false;
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.None;
+
                 });
 
             services.AddSession(options => {

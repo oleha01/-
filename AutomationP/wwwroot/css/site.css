@@ -314,7 +314,8 @@ body {
     background: #fff;
     text-align:center;
     height:52px;
- 
+ margin:0;
+ padding:0;
 }
     .row img {
 
@@ -405,6 +406,7 @@ body {
     width: 450px;
     background-color: #fff;
     padding-left:15px;
+    padding-top:100px;
 }
 
 .cart_check_one {
@@ -438,12 +440,12 @@ body {
 }
 .cart_with_buttons_Plus {
     position: absolute;
-    left: 0px;
+    right: 0px;
     top: 9px;
 }
 .cart_with_buttons_Minus {
     position:absolute;
-    right:0px;
+    left:0px;
     top:9px;
 }
 .cart_Quantity {
@@ -497,4 +499,127 @@ body {
     width: 600px;
     background-color: #fff;
     padding-left: 15px;
+}
+
+.exit_button {
+    position:absolute;
+    left:15px;
+    top:0px;
+    height:45px;
+    width:45px;
+    background-color:red;
+    border:none;
+    border:0px;
+   font-size:60px;
+   margin:0px;
+   padding:50px;
+  
+}
+.close {
+    position: absolute;
+    right: 32px;
+    top: 0px;
+    opacity: 0.3;
+    padding-bottom:40px;
+}
+
+    .close:hover {
+        opacity: 1;
+    }
+
+    .close:before, .close:after {
+        position: absolute;
+        left: 15px;
+        content: ' ';
+        height: 33px;
+        width: 2px;
+        background-color: #fff;
+    }
+
+    .close:before {
+        transform: rotate(45deg);
+    }
+
+    .close:after {
+        transform: rotate(-45deg);
+    }
+
+.right_panel_div_submit {
+    position:relative;
+    bottom:0px;
+}
+
+.right_panel_submit {
+    width:200px;
+    height:40px;
+}
+
+.cart_check_footer {
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    background-color: none;
+    height: 100px;
+    width: 450px;
+    border-top: solid 7px #888;
+}
+.cart_check_header {
+    position: fixed;
+    border-bottom: solid 7px #888;
+    top: 50px;
+    right: 0px;
+    background-color: none;
+    height: 100px;
+    width: 450px;
+}
+.btn_cash {
+    height:30px;
+    width:350px;
+    margin-left:50px;
+}
+
+.cart_check_confirm_buy {
+    min-width: 500px;
+    min-height: 550px;
+    max-width: 500px;
+    max-height: 550px;
+    position: fixed;
+    top: 50%;
+    margin-top: -275px;
+    margin-left: -250px;
+    left: 50%;
+    background-color: red;
+    z-index: 21;
+}
+
+.cart_check_confirm_buy_background {
+    position: fixed;
+    top:0px;
+    left:0px;
+    min-height: 100%;
+    min-width: 100%;
+    background-color: #888;
+   opacity:0.5;
+    z-index: 20;
+}
+.cart_check_confirm_buy_header {
+    background-color: #332c38;
+    min-height:55px;
+}
+.cart_check_confirm_buy_content {
+    margin-top: 20px;
+    font-size: 16px;
+}
+.cart_check_confirm_buy_summa {
+    color: #36b9de;
+    text-align: right;
+}
+.row_int_cart_check {
+    padding-top: 15px;
+    color: black;
+    font-size: 18px;
+}
+
+.hidden {
+    display:none;
 }

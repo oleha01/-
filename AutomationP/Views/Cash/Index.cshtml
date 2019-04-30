@@ -6,43 +6,65 @@
 
 
 <body>
+     <div id="cart_check_confirm_buy_background" class="cart_check_confirm_buy_background hidden">
 
+    </div>
+    <div id="cart_check_confirm_buy " class="cart_check_confirm_buy hidden">
+        <div class="cart_check_confirm_buy_header">
+          
+        </div>
+        <div class="cart_check_confirm_buy_content">
+            <div class="row_int_cart_check row"><span class="col-sm-1"></span><span class="col-sm-2">Сумма:</span> <span class="col-sm-4"></span><span id="cartSumm" class="col-sm-4 cart_check_confirm_buy_summa">453 грн.</span>  </div>
+        <div> <button class="btn-primary" onclick="window.location.href = '/Cash/Buy'">asdsad</button></div>
+    
+        </div>
+    </div>
     @Html.Partial("CashPartialView")
     <div class="cart_check">
-    <div>
-    <form>
-    @{
-        if (ViewBag.Cart != null)
-        {
+        <div class="cart_check_header">
 
-            foreach (var el in ViewBag.Cart)
-            {
-                <div class="cart_check_one">
-                <div class="row">
-                <div class="col-sm-3">
-                <div class="cart_check_name">@el.Product.Name</div>
-                <div class="cart_check_prise"> <input type="text" class="cart_sellingPrise" name="SellingPriseTextBox" value="@el.Product.SellingPrice" /> </div>
-                </div>
-                <div class="col-sm-3 cart_with_buttons">
+        </div>
+        <div>
+            <form>
+                @{
+                    if (ViewBag.Cart != null)
+                    {
+
+                        foreach (var el in ViewBag.Cart)
+                        {
+                            <div class="cart_check_one">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <div class="cart_check_name">@el.Product.Name</div>
+                                        <div class="cart_check_prise"> <input type="text" class="cart_sellingPrise" name="SellingPriseTextBox" value="@el.Product.SellingPrice" /> </div>
+                                    </div>
+                                    <div class="col-sm-3 cart_with_buttons">
 
 
-                <div class="cart_with_buttons_Plus"><input type="button" class="button_in_check" name="SellingPriseP@i" onclick="document.getElementById('Quantity_@i').value = +document.getElementById('Quantity_@i').value+1;" value="+" /></div>
-                <div class="cart_check_count  col-sm-2"><input type="text" onchange="if (+document.getElementById('Quantity_@i').value < 0) document.getElementById('Quantity_@i').value = 0;" class="cart_Quantity" id="Quantity_@i" name="Quantity_@i" value="@el.Quantity" /></div>
-                <div class="cart_with_buttons_Minus"><input type="button" class="button_in_check" name="SellingPriseM@i" onclick="if (+document.getElementById('Quantity_@i').value != 0) document.getElementById('Quantity_@i').value = +document.getElementById('Quantity_@i').value-1;" value="-" /></div>
-                </div>
-                <div class="cart_check_allPrise col-sm-3">@el.Product.SellingPrice*@el.Quantity</div>
-                </div>
-                </div>
-                i++;
-            }
+                                        <div class="cart_with_buttons_Plus"><input type="button" class="button_in_check" name="SellingPriseP@i" onclick="document.getElementById('Quantity_@i').value = +document.getElementById('Quantity_@i').value+1;" value="+" /></div>
+                                        <div class="cart_check_count  col-sm-2"><input type="text" onchange="if (+document.getElementById('Quantity_@i').value < 0) document.getElementById('Quantity_@i').value = 0;" class="cart_Quantity" id="Quantity_@i" name="Quantity_@i" value="@el.Quantity" /></div>
+                                        <div class="cart_with_buttons_Minus"><input type="button" class="button_in_check" name="SellingPriseM@i" onclick="if (+document.getElementById('Quantity_@i').value != 0) document.getElementById('Quantity_@i').value = +document.getElementById('Quantity_@i').value-1;" value="-" /></div>
+                                    </div>
+                                    <div class="cart_check_allPrise col-sm-3">@el.Product.SellingPrice*@el.Quantity</div>
+                                </div>
+                            </div>
+                            i++;
+                        }
 
-        }
+                    }
 
-    }
-    </form>
+                }
+            </form>
 
+        </div>
+
+        <div class="cart_check_footer">
+
+            <button class="btn-primary btn_cash" onclick="removeHidden();"> </button>
+        </div>
     </div>
-    </div>
+
+   
     <script src="~/js/site.js"></script>
 </body>
 

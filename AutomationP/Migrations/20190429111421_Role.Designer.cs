@@ -4,14 +4,16 @@ using Library.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AutomationP.Migrations
 {
     [DbContext(typeof(ProductContext))]
-    partial class ProductContextModelSnapshot : ModelSnapshot
+    [Migration("20190429111421_Role")]
+    partial class Role
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -177,25 +179,6 @@ namespace AutomationP.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("Library.Models.Role_RoleItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("RoleId");
-
-                    b.Property<int>("RoleItemId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.HasIndex("RoleItemId");
-
-                    b.ToTable("Role_RoleItems");
-                });
-
             modelBuilder.Entity("Library.Models.RoleItem", b =>
                 {
                     b.Property<int>("Id")
@@ -349,19 +332,6 @@ namespace AutomationP.Migrations
                     b.HasOne("Library.Models.Enterprise", "Enterprise")
                         .WithMany("Roles")
                         .HasForeignKey("EnterpriseId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("Library.Models.Role_RoleItem", b =>
-                {
-                    b.HasOne("Library.Models.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Library.Models.RoleItem", "RoleItem")
-                        .WithMany()
-                        .HasForeignKey("RoleItemId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

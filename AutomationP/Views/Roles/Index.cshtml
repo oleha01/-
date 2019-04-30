@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Library.Models.Role>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Enterprise)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Enterprise.Id)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<div class="container rigth_panel_for_somthing incoming_invoice_create">
+    <div class="rigth_panel_topLine">
+        <button type="button" class="exit_button close"> </button>
+    </div>
+    <div class="right_panel_content">
+        <form>
+            <div class="row top_inputs_in_right_panel">
+                <div class="one_div_on_right_panel col-sm-6">
+                    <input type="checkbox" name="" />
+                </div>
+                <div class="one_div_on_right_panel col-sm-6">
+                    ss
+                </div>
+            </div>
+            <div class="row">
+                <p>Товари по нікладній</p>
+            </div>
+                 </form>
+    </div>
+</div>

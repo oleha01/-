@@ -20,17 +20,25 @@ namespace AutomationP.ViewModels
             httpContext = _httpContext;
             session = _session;
         }
+        public void Clear()
+        {
+            httpContext.Response.Cookies.Delete(session);
+        }
         public void AddToCart(int id, string returnUrl)
         {
             Product product = repository.Products
-                .FirstOrDefault(g => g.Id == id);
-
+               .FirstOrDefault(p => p.Id == id);
+            CartForInvoice tt = null;
             if (product != null)
             {
-                CartForInvoice cart = GetCart();
-                cart.AddItem(product, 1);
-                httpContext.Session.Set(session, cart);
+                tt = GetCart();
+                tt.AddItem(product, 1);
             }
+            //var s = returnUrl.Split('/');
+            string seriz = JsonConvert.SerializeObject(tt);
+            httpContext.Response.Cookies.Delete(session);
+            httpContext.Response.Cookies.Append(session, seriz);
+            tt = GetCart();
         }
 
         public void RemoveFromCart(int id, string returnUrl)
@@ -46,14 +54,19 @@ namespace AutomationP.ViewModels
 
         public CartForInvoice GetCart()
         {
-            CartForInvoice cart = httpContext.Session.Get<CartForInvoice>(session);
-            if (cart == null)
+            string cart1 = httpContext.Request.Cookies[session];
+            CartForInvoice cart;
+            if (cart1 == null)
             {
                 cart = new CartForInvoice();
-                httpContext.Session.Set(session, cart);
-
+                httpContext.Response.Cookies.Append(session, JsonConvert.SerializeObject(cart));
+            }
+            else
+            {
+                cart = JsonConvert.DeserializeObject<CartForInvoice>(cart1);
             }
             return cart;
+
         }
     }
 }

@@ -8,6 +8,7 @@ using Library.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using AutomationP.ViewModels;
 
 namespace AutomationP.Controllers
 {
@@ -19,6 +20,18 @@ namespace AutomationP.Controllers
         public CashController(ProductContext context)
         {
             _context = context;
+        }
+        public RedirectToActionResult Buy()
+        {
+            CartClass cartClass = new CartClass("Cart", _context, HttpContext);
+            var carts = cartClass.GetCart().Lines;
+            foreach(var el in carts)
+            {
+                _context.Sales.Add(new Sales { ProductId = el.Product.Id, Quantity = el.Quantity, Price = el.Product.SellingPrice });
+            }
+            cartClass.Clear();
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
         // GET: Cash
         public ActionResult Index()
@@ -33,16 +46,8 @@ namespace AutomationP.Controllers
             ViewBag.categ = categories;
             ViewBag.prod = products;
             ViewBag.ParentCat = null;
-            Cart cart = HttpContext.Session.Get<Cart>("Cart");
-            if (cart == null)
-            {
-                cart = new Cart();
-                HttpContext.Session.Set("Cart", cart);
-
-            }
-            ViewBag.Cart = cart.Lines;
-            
-
+            CartClass cartClass = new CartClass("Cart", _context, HttpContext);
+            ViewBag.Cart = cartClass.GetCart().Lines ;
             return View();
         }
 
@@ -61,14 +66,8 @@ namespace AutomationP.Controllers
             ViewBag.prod = products;
             ViewBag.ParentCatName = cat1.Name;
             ViewBag.ParentCatId = _context.Categories.First(p=>p.Name==cat1.ParentCategory.Name).Id;
-            Cart cart = HttpContext.Session.Get<Cart>("Cart");
-            if (cart == null)
-            {
-                cart = new Cart();
-                HttpContext.Session.Set("Cart", cart);
-
-            }
-            ViewBag.Cart = cart.Lines;
+            CartClass cartClass = new CartClass("Cart", _context, HttpContext);
+            ViewBag.Cart = cartClass.GetCart().Lines;
             return View("Index");
         }
        

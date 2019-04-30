@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutomationP.Migrations
 {
     [DbContext(typeof(ProductContext))]
-    [Migration("20190409144446_newTable")]
-    partial class newTable
+    [Migration("20190428145018_newBase")]
+    partial class newBase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -65,9 +65,13 @@ namespace AutomationP.Migrations
 
                     b.Property<int>("StorageId");
 
+                    b.Property<int>("UserId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("StorageId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("IncomingInvoices");
                 });
@@ -78,15 +82,17 @@ namespace AutomationP.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Capacity");
+                    b.Property<int>("InvoiceId");
 
-                    b.Property<int?>("IncomingInvoiceId");
+                    b.Property<int>("Prise");
 
                     b.Property<int>("ProductId");
 
+                    b.Property<int>("Quantity");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("IncomingInvoiceId");
+                    b.HasIndex("InvoiceId");
 
                     b.HasIndex("ProductId");
 
@@ -143,8 +149,6 @@ namespace AutomationP.Migrations
 
                     b.Property<int>("ParCategoryId");
 
-                    b.Property<int?>("SalesId");
-
                     b.Property<int>("SellingPrice");
 
                     b.Property<string>("Units");
@@ -154,8 +158,6 @@ namespace AutomationP.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ParCategoryId");
-
-                    b.HasIndex("SalesId");
 
                     b.ToTable("Products");
                 });
@@ -202,9 +204,19 @@ namespace AutomationP.Migrations
 
                     b.Property<DateTime>("Date");
 
+                    b.Property<int>("PointOfSaleId");
+
+                    b.Property<int>("Price");
+
                     b.Property<int>("ProductId");
 
+                    b.Property<int>("Quantity");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("PointOfSaleId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Sales");
                 });
@@ -270,13 +282,18 @@ namespace AutomationP.Migrations
                         .WithMany("IncomingInvoices")
                         .HasForeignKey("StorageId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Library.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Library.Models.Invoice_Product", b =>
                 {
-                    b.HasOne("Library.Models.IncomingInvoice")
+                    b.HasOne("Library.Models.IncomingInvoice", "Invoice")
                         .WithMany("Invoice_Products")
-                        .HasForeignKey("IncomingInvoiceId")
+                        .HasForeignKey("InvoiceId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Library.Models.Product", "Product")
@@ -312,11 +329,6 @@ namespace AutomationP.Migrations
                         .WithMany("Products")
                         .HasForeignKey("ParCategoryId")
                         .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Library.Models.Sales")
-                        .WithMany("Product")
-                        .HasForeignKey("SalesId")
-                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Library.Models.Role", b =>
@@ -332,6 +344,19 @@ namespace AutomationP.Migrations
                     b.HasOne("Library.Models.Role")
                         .WithMany("RoleItems")
                         .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Library.Models.Sales", b =>
+                {
+                    b.HasOne("Library.Models.PointOfSale", "PointOfSale")
+                        .WithMany()
+                        .HasForeignKey("PointOfSaleId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Library.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

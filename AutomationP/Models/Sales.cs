@@ -10,7 +10,11 @@ namespace Library.Models
     {
         public int Id { get; set; }
         public int ProductId { get; set; }
-        virtual public List<Product> Product { get; set; }
+        virtual public Product Product { get; set; }
+        public int Quantity { get; set; }
+        public int Price { get; set; }
         public DateTime Date { get; set; }
+        public int PointOfSaleId { get; set; }
+        virtual public PointOfSale PointOfSale { get; set; }
     }
 }

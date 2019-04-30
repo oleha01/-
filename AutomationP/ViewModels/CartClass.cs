@@ -22,7 +22,7 @@ namespace AutomationP.ViewModels
         }
         public void AddToCart(int id, string returnUrl)
         {
-            Product product = repository.Products
+            /*Product product = repository.Products
                 .FirstOrDefault(g => g.Id == id);
 
             if (product != null)
@@ -30,9 +30,25 @@ namespace AutomationP.ViewModels
                 Cart cart = GetCart();
                 cart.AddItem(product, 1);
                 httpContext.Session.Set(session, cart);
+            }*/
+            Product product = repository.Products
+               .FirstOrDefault(p => p.Id == id);
+            Cart tt = null;
+            if (product != null)
+            {
+                tt = GetCart();
+                tt.AddItem(product, 1);
             }
+            //var s = returnUrl.Split('/');
+            string seriz = JsonConvert.SerializeObject(tt);
+            httpContext.Response.Cookies.Delete(session);
+            httpContext.Response.Cookies.Append(session, seriz);
+            tt = GetCart();
         }
-
+        public void Clear()
+        {
+            httpContext.Response.Cookies.Delete(session);
+        }
         public void RemoveFromCart(int id, string returnUrl)
         {
             Product product = repository.Products
@@ -46,12 +62,12 @@ namespace AutomationP.ViewModels
 
         public Cart GetCart()
         {
-            string cart1 = httpContext.Request.Cookies["session"];
+            string cart1 = httpContext.Request.Cookies[session];
             Cart cart;
             if (cart1 == null)
             {
                 cart = new Cart();
-                httpContext.Response.Cookies.Append("session", JsonConvert.SerializeObject(cart)); httpContext.Session.Set("Cart", cart);
+                httpContext.Response.Cookies.Append(session, JsonConvert.SerializeObject(cart));
             }
             else
             {

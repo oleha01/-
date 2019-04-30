@@ -19,6 +19,24 @@ namespace AutomationP.Controllers
             _context = context;
         }
 
+        public RedirectToActionResult CreateIncomingInvoice([Bind("Id,Date,StorageId")] IncomingInvoice incomingInvoice)
+        {
+            CartClassForInvoice cartClassForInvoice = new CartClassForInvoice("Product_in_InomingInvoice", _context, HttpContext);
+            incomingInvoice.UserId = _context.Users.FirstOrDefault(s => s.Login == User.Identity.Name).Id;
+            _context.IncomingInvoices.Add(incomingInvoice);
+            _context.SaveChanges();
+            var e = cartClassForInvoice.GetCart().Lines;
+            foreach (var el in e)
+            {
+                el.InvoiceId = incomingInvoice.Id;
+                Invoice_Product newInvo = new Invoice_Product { InvoiceId = incomingInvoice.Id, ProductId = el.ProductId, Quantity = el.Quantity };
+                _context.Invoice_Products.Add(newInvo);
+            }
+            _context.SaveChanges();
+            cartClassForInvoice.Clear();
+            
+            return RedirectToAction("Index");
+        }
         // GET: IncomingInvoices
         public async Task<IActionResult> Index(int Id=-1)
         {
@@ -52,6 +70,7 @@ namespace AutomationP.Controllers
             var products = _context.Products.Where(p => p.ParCategory.EnterpriseId == id && p.ParCategory.Name == NameCategory).ToList();
             ViewBag.categ = categories;
             ViewBag.prod = products;
+            ViewData["Storages"] = new SelectList(_context.Storages.Where(p => p.EnterpriseId == id), "Id", "Name");
             if (cat1 != null)
             {
                 ViewBag.ParentCatName = cat1.Name;
