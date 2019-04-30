@@ -6,35 +6,41 @@
     <div class="right_panel_content">
         <form>
             <div class="row top_inputs_in_right_panel">
-                <div class="one_div_on_right_panel col-sm-6">
-                    <label asp-for="LastName">Прізвище</label>
-                    <input asp-for="LastName" type="text" class="in_right_panel" />
-                    <span asp-validation-for="LastName" class="text-danger"></span>
+             
+                <div class="row">
+                    <div class="one_div_on_right_panel col-sm-4">
+                        <label asp-for="LastName">Прізвище</label>
+                        <input asp-for="LastName" type="text" class="in_right_panel-sm" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="one_div_on_right_panel col-sm-4">
+                        <label asp-for="Name">Імя</label>
+                        <input asp-for="Name" type="text" class="in_right_panel-sm" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="one_div_on_right_panel col-sm-4">
+                        <label asp-for="Patronymic">По-Батькові</label>
+                        <input asp-for="Patronymic" type="text" class="in_right_panel-sm" />
+                        <span asp-validation-for="Patronymic" class="text-danger"></span>
+                    </div>
+
+                    <div class="one_div_on_right_panel col-sm-6">
+                        <label asp-for="Login">Логін</label>
+                        <input asp-for="Login" type="text" class="in_right_panel" />
+                        <span asp-validation-for="Login" class="text-danger"></span>
+                    </div>
+                    <div class="one_div_on_right_panel col-sm-6">
+                        <label asp-for="Email">E-mail</label>
+                        <input asp-for="Email" type="text" class="in_right_panel" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
                 </div>
-                <div class="one_div_on_right_panel col-sm-6">
-                    <label asp-for="Name">Імя</label>
-                    <input asp-for="Name" type="text" class="in_right_panel" />
-                    <span asp-validation-for="Name" class="text-danger"></span>
-                </div>
-                <div class="one_div_on_right_panel col-sm-6">
-                    <label asp-for="Patronymic">Прізвище</label>
-                    <input asp-for="Patronymic" type="text" class="in_right_panel" />
-                    <span asp-validation-for="Patronymic" class="text-danger"></span>
-                </div>
-                <div class="one_div_on_right_panel col-sm-6">
-                    <label asp-for="Login">Прізвище</label>
-                    <input asp-for="Login" type="text" class="in_right_panel" />
-                    <span asp-validation-for="Login" class="text-danger"></span>
-                </div>
-                <div class="one_div_on_right_panel col-sm-6">
-                    <label asp-for="Email">Номер</label>
-                    <input asp-for="Email" type="date" class="in_right_panel" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
+                
+                <div>
+
                 </div>
             </div>
-            <div class="row">
-                <p>Товари по нікладній</p>
-            </div>
+            
         </form>
     </div>
 </div>

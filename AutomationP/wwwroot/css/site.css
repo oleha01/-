@@ -462,9 +462,14 @@ body {
 .in_right_panel {
     width:260px;
     height:35px;
+    border-radius:5px;
+}
+.in_right_panel-sm {
+    width: 150px;
+    height: 35px;
+    border-radius: 5px;
 }
 .one_div_on_right_panel {
-
 }
 
 .rigth_panel_for_somthing {
