@@ -37,6 +37,36 @@ namespace AutomationP.Controllers
             
             return RedirectToAction("Index");
         }
+        public ActionResult CreatingInvoice(int Id = -1)
+        {
+            int id = int.Parse(User.Claims.ToList()[1].Value);
+            var enter = _context.Enterprises.Find(id);
+            var NameCategory = "baseCategory." + enter.Name;
+            Category cat1 = null;
+            if (Id != -1)
+            {
+                cat1 = _context.Categories.Find(Id);
+                if (NameCategory != cat1.Name)
+                {
+                    NameCategory = cat1.Name;
+                }
+                else
+                {
+                    cat1 = null;
+                }
+            }
+            CartClassForInvoice cartClassForInvoice = new CartClassForInvoice("Product_in_InomingInvoice", _context, HttpContext);
+
+            var e = cartClassForInvoice.GetCart().Lines;
+            ViewBag.Products = cartClassForInvoice.GetCart().Lines;
+            ViewBag.IncomingInvoice = new IncomingInvoice();
+            ViewData["Storages"] = new SelectList(_context.Storages.Where(p => p.EnterpriseId == id), "Id", "Name");
+            var categories = _context.Categories.Where(p => p.EnterpriseId == id && p.ParentCategory.Name == NameCategory).ToList();
+            var products = _context.Products.Where(p => p.ParCategory.EnterpriseId == id && p.ParCategory.Name == NameCategory).ToList();
+            ViewBag.categ = categories;
+            ViewBag.prod = products;
+            return View();
+        }
         // GET: IncomingInvoices
         public async Task<IActionResult> Index(int Id=-1)
         {
@@ -84,7 +114,7 @@ namespace AutomationP.Controllers
         {
             CartClassForInvoice cartClassForInvoice = new CartClassForInvoice("Product_in_InomingInvoice", _context, HttpContext);
             cartClassForInvoice.AddToCart(id, returnUrl);
-            return RedirectToAction("Index");
+            return RedirectToAction("CreatingInvoice");
         }
         // GET: IncomingInvoices/Details/5
         public async Task<IActionResult> Details(int? id)

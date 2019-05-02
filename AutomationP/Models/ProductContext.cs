@@ -23,6 +23,8 @@ namespace Library.Models
         public DbSet<IncomingInvoice> IncomingInvoices { get; set; }
         public DbSet<Invoice_Product> Invoice_Products { get; set; }
         public DbSet<Role_RoleItem> Role_RoleItems { get; set; }
+        public DbSet<User_Point> User_Points { get; set; }
+        public DbSet<User_Storage> User_Storages { get; set; }
         public ProductContext(DbContextOptions<ProductContext> options)
             : base(options)
         {

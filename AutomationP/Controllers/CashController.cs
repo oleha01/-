@@ -50,6 +50,14 @@ namespace AutomationP.Controllers
             ViewBag.Cart = cartClass.GetCart().Lines ;
             return View();
         }
+        public ActionResult SelectPoint()
+        {
+            int IdEnterprise = int.Parse(User.Claims.ToList()[1].Value);
+            Enterprise Enterprise = _context.Enterprises.Find(IdEnterprise);
+            User user= _context.Users.FirstOrDefault(s => s.Login == User.Identity.Name);
+          //  _context.PointOfSales.Where(p=>p.EnterpriseId==IdEnterprise && user.Role.
+            return View();
+        }
 
         public ActionResult Category(int Id)
         {

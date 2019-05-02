@@ -16,7 +16,8 @@ namespace Library.Models
         public string Login { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public int RoleId { get; set; }
-        virtual public Role Role { get; set; }
+        public int EnterpriseId { get; set; }
+        virtual public Enterprise Enterprise { get; set; }
+        virtual public List<Role> Roles { get; set; }
     }
 }

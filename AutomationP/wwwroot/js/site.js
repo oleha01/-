@@ -34,4 +34,30 @@ function AddHidden() {
     $('.cart_check_confirm_buy').addClass('hidden');
     $('.cart_check_confirm_buy_background').addClass('hidden');
 }
-$(document).ready(function () { CartSumm();});
+$(document).ready(function () { CartSumm(); });
+
+function CheckBoxClicked(s1, i,check) {
+    if (check.checked) {
+        var t = document.getElementById(s1).value;
+        var t1 = "";
+        for (var j = 0; j < t.length; j++)
+        {
+            if (+i != +j)
+                t1 += t[j];
+            else
+                t1 += "1";
+        }
+        document.getElementById(s1).value = t1;
+    }
+    else {
+        var t = document.getElementById(s1).value;
+        var t1 = "";
+        for (var j = 0; j < t.length; j++) {
+            if (+i != +j)
+                t1 += t[j];
+            else
+                t1 += "0";
+        }
+        document.getElementById(s1).value = t1;
+    }
+}

@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Storage>
+@if (Model != null)
+{
+<div class="min-width-right-panel">
+    @{
+        string capas = "";
+        for (int i = 0; i < Model.ToList().Capacity; i++)
+        {
+            capas += "0";
+        }
+        var Storagelist = Model.ToList();
+
+    } <input name="textboxStorageForCheck" id="textboxStorageForCheck" type="text" readonly value="@capas" hidden />
+
+    <div class="row">
+        @for (int i = 0; i < Model.ToList().Capacity; i++)
+        {
+            <div class="margin-10">
+                <input class="" type="checkbox" id="StorageCheckBox_@i" onclick="CheckBoxClicked('textboxStorageForCheck','@i',this)" />
+                <span>@Storagelist[i].Name</span>
+            </div>
+        }
+    </div>
+</div>
+}

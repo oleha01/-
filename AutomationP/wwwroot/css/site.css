@@ -188,8 +188,8 @@ body {
 
 .Scontent {
     position: relative;
-    padding-right: 220px;
-    left: 220px;
+  
+    padding-left: 210px;
 }
 .LoginApp {
     background: url(/images/thumb-1920-609178.jpg) no-repeat;
@@ -460,29 +460,40 @@ body {
 }
 
 .in_right_panel {
-    width:260px;
+    width:200px;
     height:35px;
     border-radius:5px;
+}
+.in_right_panell {
+    width: 240px;
+    height: 35px;
+    border-radius: 5px;
 }
 .in_right_panel-sm {
     width: 150px;
     height: 35px;
     border-radius: 5px;
 }
-.one_div_on_right_panel {
+.row-margin-b {
+    margin-bottom: 30px;
 }
 
 .rigth_panel_for_somthing {
     position: fixed;
-    right: 0px;
+    right: -600px;
     top: 50px;
     bottom: 0px;
     min-height: 84vh;
     width: 600px;
     background-color: #fff;
     padding-left: 15px;
+    transition-property: right;
+    transition-duration: .2s;
+    box-shadow: 0 0 4px rgba(0,0,0,.25);
 }
-
+.open {
+    right: 0px;
+}
 .rigth_panel_topLine {
     min-height:45px;
     background:#000;
@@ -495,17 +506,25 @@ body {
 .top_inputs_in_right_panel {
     margin-bottom:20px;
 }
+
 .rigth_panel2_for_somthing {
     position: fixed;
-    right: 600px;
+    right: 0px;
     top: 50px;
     bottom: 0px;
     min-height: 84vh;
     width: 600px;
     background-color: #fff;
     padding-left: 15px;
+    transition-property: right;
+    transition-duration: .2s;
+    box-shadow: 0 0 4px rgba(0,0,0,.25);
+    display:none;
 }
-
+.open2 {
+    display:block;
+    right: 600px;
+}
 .exit_button {
     position:absolute;
     left:15px;
@@ -523,9 +542,9 @@ body {
 .close {
     position: absolute;
     right: 32px;
-    top: 0px;
+    top: -10px;
     opacity: 0.3;
-    padding-bottom:40px;
+    padding-bottom:60px;
 }
 
     .close:hover {
@@ -627,4 +646,44 @@ body {
 
 .hidden {
     display:none;
+}
+.second_in_right_panel {
+    margin-top:100px;
+}
+
+.min-width-right-panel {
+    min-width: 600px;
+}
+.margin-10 {
+    margin:10px;
+}
+.in_user {
+    border-top: 2px solid;
+}
+#basic-addon1 {
+    height: 35px;
+
+}
+.incCreate{
+
+}
+.topLine {
+    height:30px;
+    width:100%;
+    background-color:red;
+}
+.incCreateBlock{
+    background-color:white;
+    border-right:5px solid;
+    min-height:600px;
+    min-width:451px;
+}
+.border-bottom {
+    border-bottom:2px solid;
+}
+
+.bottom_submit {
+    position:absolute;
+    bottom:30px;
+    right:50px;
 }

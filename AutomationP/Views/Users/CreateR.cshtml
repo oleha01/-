@@ -1,46 +1,134 @@
 ﻿@model User
-<div class="container rigth_panel_for_somthing incoming_invoice_create">
+<div class="container rigth_panel_for_somthing incoming_invoice_create" id="rigth_panel_for_somthing">
     <div class="rigth_panel_topLine">
-        <button type="button" class="exit_button close"> </button>
+        <button type="button" class="exit_button close" onclick="$('#rigth_panel_for_somthing').removeClass('open')"> </button>
     </div>
     <div class="right_panel_content">
-        <form>
+        <form asp-action="Create">
             <div class="row top_inputs_in_right_panel">
-             
-                <div class="row">
+
+                <div class="row row-margin-b">
                     <div class="one_div_on_right_panel col-sm-4">
                         <label asp-for="LastName">Прізвище</label>
-                        <input asp-for="LastName" type="text" class="in_right_panel-sm" />
+                        <input asp-for="LastName" type="text" class="in_right_panel-sm form-control" />
                         <span asp-validation-for="LastName" class="text-danger"></span>
                     </div>
                     <div class="one_div_on_right_panel col-sm-4">
                         <label asp-for="Name">Імя</label>
-                        <input asp-for="Name" type="text" class="in_right_panel-sm" />
+                        <input asp-for="Name" type="text" class="in_right_panel-sm form-control" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
                     <div class="one_div_on_right_panel col-sm-4">
                         <label asp-for="Patronymic">По-Батькові</label>
-                        <input asp-for="Patronymic" type="text" class="in_right_panel-sm" />
+                        <input asp-for="Patronymic" type="text" class="in_right_panel-sm form-control" />
                         <span asp-validation-for="Patronymic" class="text-danger"></span>
                     </div>
+                </div>
+                <div class="row row-margin-b">
 
                     <div class="one_div_on_right_panel col-sm-6">
                         <label asp-for="Login">Логін</label>
-                        <input asp-for="Login" type="text" class="in_right_panel" />
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">@ViewBag.EnterpriseName.</span>
+                            </div>
+                            <input asp-for="Login" type="text" class="in_right_panel form-control" />
+                        </div>
                         <span asp-validation-for="Login" class="text-danger"></span>
                     </div>
                     <div class="one_div_on_right_panel col-sm-6">
                         <label asp-for="Email">E-mail</label>
-                        <input asp-for="Email" type="text" class="in_right_panel" />
+                        <input asp-for="Email" type="text" class="in_right_panell form-control" />
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
                 </div>
-                
-                <div>
-
+                <div class="row row-margin-b">
+                    <p class="col-sm-6"></p>
+                    <div class="one_div_on_right_panel col-sm-6">
+                        <label asp-for="Password">Пароль</label>
+                        <input asp-for="Password" type="text" class="in_right_panell form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
                 </div>
+
+                <div class="in_user">
+                    Доступи
+                    
+                        <div class="min-width-right-panel">
+                            <div class="min-width-right-panel">
+                                @{
+                                    string capas1 = "";
+                                    for (int i = 0; i < ViewBag.Role.Count; i++)
+                                    {
+                                        capas1 += "0";
+                                    }
+                                    var rolelist = ViewBag.Role;
+
+                                }
+                                <input name="textboxRoleForCheck" id="textboxRoleForCheck" type="text" readonly value="@capas1" hidden />
+                                <div class="row">
+                                    @for (int i = 0; i < ViewBag.Role.Count; i++)
+                                    {
+                                        <div class="margin-10">
+                                            <input type="checkbox" id="RoleCheckBox_@i" onclick="CheckBoxClicked('textboxRoleForCheck','@i',this)" />
+                                            <span>@rolelist[i].Name</span>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>  
+                    
+                </div>
+                <div class="in_user">
+                    Точки продажів
+                    <div class="min-width-right-panel">
+                        @{
+                            string capas2 = "";
+                            for (int i = 0; i < ViewBag.Point.Count; i++)
+                            {
+                                capas2 += "0";
+                            }
+                            var pointlist = ViewBag.Point;
+
+                        }
+                        <input name="textboxPointForCheck" id="textboxPointForCheck" type="text" readonly value="@capas2" hidden  />
+                        <div class="row">
+                            @for (int i = 0; i < ViewBag.Point.Count; i++)
+                            {
+                                <div class="margin-10">
+                                    <input type="checkbox" id="PointCheckBox_@i" onclick="CheckBoxClicked('textboxPointForCheck','@i',this)" />
+                                    <span>@pointlist[i].Name</span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="in_user">
+                    Склади
+                    <div class="min-width-right-panel">
+                        @{
+                            string capas3 = "";
+                            for (int i = 0; i < ViewBag.Storage.Count; i++)
+                            {
+                                capas3 += "0";
+                            }
+                            var Storagelist = ViewBag.Storage;
+
+                        }
+                    <input name="textboxStorageForCheck" id="textboxStorageForCheck" type="text" readonly value="@capas3" hidden />
+
+                        <div class="row">
+                            @for (int i = 0; i < ViewBag.Storage.Count; i++)
+                            {
+                                <div class="margin-10">
+                                    <input class="" type="checkbox" id="StorageCheckBox_@i" onclick="CheckBoxClicked('textboxStorageForCheck','@i',this)" />
+                                    <span>@Storagelist[i].Name</span>
+                                </div>
+                            }
+                        </div>
+                    </div>       </div>
             </div>
-            
+            <button type="submit" class="btn btn-primary bottom_submit">Створити</button>
         </form>
     </div>
 </div>

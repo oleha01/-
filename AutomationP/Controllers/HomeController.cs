@@ -21,7 +21,7 @@ namespace AutomationP.Controllers
         [Authorize]
         public IActionResult Index()
         {
-            var enter = db.Users.FirstOrDefault(s => s.Login == User.Identity.Name).Role.EnterpriseId;
+            var enter = db.Users.FirstOrDefault(s => s.Login == User.Identity.Name).EnterpriseId;
             ViewBag.Enter = User.Claims.ToList()[1].Value + " "+ User.Claims.ToList()[0].Value;
           //  ViewBag.Enter = enter;
             return View();

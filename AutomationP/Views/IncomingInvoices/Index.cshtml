@@ -7,9 +7,11 @@
 <h2>Товари і послуги</h2>
 
 <p>
-    <a asp-action="Create">
-        <button type="button" class="btn btn-success" id="create-button">Створити</button>
+    <a asp-action="CreatingInvoice">
+        <button  class="btn btn-success" id="create-button">Створити</button>
     </a>
+    <input type="text" id="open1" />
+    <input type="text" id="open2" />
 </p>
 <div class="container">
     <div class="legend">
@@ -33,7 +35,7 @@
     </div>
     @foreach (var item in Model)
     {
-        <div class="row">
+        <div class="row border-bottom">
             <div class="col-sm-2">
 
                 <div class="present-text">
@@ -66,11 +68,14 @@
             </div>
             <div class="col-sm-4">
                 <div class="present-text">
-                    @foreach (var el in item.Invoice_Products)
-                    {
-                        <p>@el.Product.Name x @el.Quantity</p>
-                    }
+                    @{ string strochka = "";
+                        foreach (var el1 in item.Invoice_Products)
+                        {
 
+                            strochka += el1.Product.Name + " x " + el1.Quantity + ";  ";
+                        }
+                    }
+                    <div>@strochka</div>
                 </div>
             </div>
 
@@ -79,5 +84,4 @@
     }
 </div>
 
-@await Html.PartialAsync("CreateP", ViewBag.IncomingInvoice as IncomingInvoice)
 
