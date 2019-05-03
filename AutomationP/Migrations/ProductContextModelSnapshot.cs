@@ -261,6 +261,8 @@ namespace AutomationP.Migrations
 
                     b.Property<string>("Email");
 
+                    b.Property<int>("EnterpriseId");
+
                     b.Property<string>("LastName");
 
                     b.Property<string>("Login");
@@ -271,11 +273,9 @@ namespace AutomationP.Migrations
 
                     b.Property<string>("Patronymic");
 
-                    b.Property<int>("RoleId");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleId");
+                    b.HasIndex("EnterpriseId");
 
                     b.ToTable("Users");
                 });
@@ -297,6 +297,25 @@ namespace AutomationP.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("User_Points");
+                });
+
+            modelBuilder.Entity("Library.Models.User_Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("RoleId");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("User_Roles");
                 });
 
             modelBuilder.Entity("Library.Models.User_Storage", b =>
@@ -430,9 +449,9 @@ namespace AutomationP.Migrations
 
             modelBuilder.Entity("Library.Models.User", b =>
                 {
-                    b.HasOne("Library.Models.Role", "Role")
-                        .WithMany("Users")
-                        .HasForeignKey("RoleId")
+                    b.HasOne("Library.Models.Enterprise", "Enterprise")
+                        .WithMany()
+                        .HasForeignKey("EnterpriseId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
@@ -441,6 +460,19 @@ namespace AutomationP.Migrations
                     b.HasOne("Library.Models.PointOfSale", "Point")
                         .WithMany()
                         .HasForeignKey("PointId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Library.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Library.Models.User_Role", b =>
+                {
+                    b.HasOne("Library.Models.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Library.Models.User", "User")

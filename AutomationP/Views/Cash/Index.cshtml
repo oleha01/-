@@ -8,20 +8,30 @@
     
 </head>
 <body>
-     <div id="cart_check_confirm_buy_background" class="cart_check_confirm_buy_background hidden">
-         
+    <div id="cart_check_confirm_buy_background" class="cart_check_confirm_buy_background hidden">
+
     </div>
     <div id="cart_check_confirm_buy " class="cart_check_confirm_buy hidden">
         <div class="cart_check_confirm_buy_header">
-          
+
         </div>
         <div class="cart_check_confirm_buy_content">
             <div class="row_int_cart_check row"><span class="col-sm-1"></span><span class="col-sm-2">Сумма:</span> <span class="col-sm-4"></span><span id="cartSumm" class="col-sm-4 cart_check_confirm_buy_summa">453 грн.</span>  </div>
-        <div> <button class="btn-primary" onclick="window.location.href = '/Cash/Buy'">asdsad</button></div>
-    
+            <div> <button class="btn-primary" onclick="window.location.href = '/Cash/Buy'">asdsad</button></div>
+
         </div>
     </div>
-    @Html.Partial("CashPartialView")
+
+    @if (ViewBag.Points == null)
+    {
+        Html.Partial("CashPartialView");
+    }
+    else
+    {
+        Html.Partial("SelectPoint");
+    }
+   
+
     <div class="cart_check">
         <div class="cart_check_header">
 
@@ -66,7 +76,7 @@
         </div>
     </div>
 
-   
+
     <script src="~/js/site.js"></script>
 </body>
 

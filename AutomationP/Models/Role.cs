@@ -9,5 +9,7 @@ namespace Library.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public int EnterpriseId { get; set; }
+        virtual public Enterprise Enterprise { get; set; }
     }
 }

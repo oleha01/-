@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutomationP.Migrations
 {
     [DbContext(typeof(ProductContext))]
-    [Migration("20190430065931_user")]
-    partial class user
+    [Migration("20190502155820_newyy")]
+    partial class newyy
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -263,6 +263,8 @@ namespace AutomationP.Migrations
 
                     b.Property<string>("Email");
 
+                    b.Property<int>("EnterpriseId");
+
                     b.Property<string>("LastName");
 
                     b.Property<string>("Login");
@@ -273,13 +275,68 @@ namespace AutomationP.Migrations
 
                     b.Property<string>("Patronymic");
 
+                    b.HasKey("Id");
+
+                    b.HasIndex("EnterpriseId");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Library.Models.User_Point", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("PointId");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PointId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("User_Points");
+                });
+
+            modelBuilder.Entity("Library.Models.User_Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<int>("RoleId");
+
+                    b.Property<int>("UserId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Users");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("User_Roles");
+                });
+
+            modelBuilder.Entity("Library.Models.User_Storage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("StorageId");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StorageId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("User_Storages");
                 });
 
             modelBuilder.Entity("Library.Models.Category", b =>
@@ -394,9 +451,48 @@ namespace AutomationP.Migrations
 
             modelBuilder.Entity("Library.Models.User", b =>
                 {
+                    b.HasOne("Library.Models.Enterprise", "Enterprise")
+                        .WithMany()
+                        .HasForeignKey("EnterpriseId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Library.Models.User_Point", b =>
+                {
+                    b.HasOne("Library.Models.PointOfSale", "Point")
+                        .WithMany()
+                        .HasForeignKey("PointId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Library.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Library.Models.User_Role", b =>
+                {
                     b.HasOne("Library.Models.Role", "Role")
-                        .WithMany("Users")
+                        .WithMany()
                         .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Library.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Library.Models.User_Storage", b =>
+                {
+                    b.HasOne("Library.Models.Storage", "Storage")
+                        .WithMany()
+                        .HasForeignKey("StorageId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Library.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618

@@ -25,6 +25,7 @@ namespace Library.Models
         public DbSet<Role_RoleItem> Role_RoleItems { get; set; }
         public DbSet<User_Point> User_Points { get; set; }
         public DbSet<User_Storage> User_Storages { get; set; }
+        public DbSet<User_Role> User_Roles { get; set; }
         public ProductContext(DbContextOptions<ProductContext> options)
             : base(options)
         {

@@ -33,6 +33,7 @@ namespace AutomationP.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
+        
         // GET: Cash
         public ActionResult Index()
         {
@@ -40,7 +41,12 @@ namespace AutomationP.Controllers
             int id = int.Parse(User.Claims.ToList()[1].Value);
             var enter = _context.Enterprises.Find(id);
             var NameCategory = "baseCategory." + enter.Name;
-
+            string pointId = HttpContext.Request.Cookies["BasePoint"];
+            if (pointId == null)
+            {
+                ViewBag.Points = _context.PointOfSales.Where(p => p.EnterpriseId == id);
+                return View();
+            }
             var categories = _context.Categories.Where(p => p.EnterpriseId == id && p.ParentCategory.Name == NameCategory).ToList();
             var products = _context.Products.Where(p => p.ParCategory.EnterpriseId == id && p.ParCategory.Name == NameCategory).ToList();
             ViewBag.categ = categories;
@@ -50,13 +56,13 @@ namespace AutomationP.Controllers
             ViewBag.Cart = cartClass.GetCart().Lines ;
             return View();
         }
-        public ActionResult SelectPoint()
+        public RedirectToActionResult SelectPoint()
         {
             int IdEnterprise = int.Parse(User.Claims.ToList()[1].Value);
             Enterprise Enterprise = _context.Enterprises.Find(IdEnterprise);
             User user= _context.Users.FirstOrDefault(s => s.Login == User.Identity.Name);
-          //  _context.PointOfSales.Where(p=>p.EnterpriseId==IdEnterprise && user.Role.
-            return View();
+            //  _context.PointOfSales.Where(p=>p.EnterpriseId==IdEnterprise && user.Role.
+            return RedirectToAction("Index");
         }
 
         public ActionResult Category(int Id)

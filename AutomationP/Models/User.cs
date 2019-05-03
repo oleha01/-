@@ -18,6 +18,5 @@ namespace Library.Models
         public string Password { get; set; }
         public int EnterpriseId { get; set; }
         virtual public Enterprise Enterprise { get; set; }
-        virtual public List<Role> Roles { get; set; }
     }
 }

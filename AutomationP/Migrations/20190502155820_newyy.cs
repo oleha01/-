@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AutomationP.Migrations
 {
-    public partial class newBase : Migration
+    public partial class newyy : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -19,6 +19,19 @@ namespace AutomationP.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Enterprises", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RoleItems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RoleItems", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -110,6 +123,31 @@ namespace AutomationP.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    LastName = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    Patronymic = table.Column<string>(nullable: true),
+                    Login = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    Password = table.Column<string>(nullable: true),
+                    EnterpriseId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_Enterprises_EnterpriseId",
+                        column: x => x.EnterpriseId,
+                        principalTable: "Enterprises",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
@@ -135,44 +173,27 @@ namespace AutomationP.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RoleItems",
+                name: "Role_RoleItems",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
-                    RoleId = table.Column<int>(nullable: true)
+                    RoleId = table.Column<int>(nullable: false),
+                    RoleItemId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoleItems", x => x.Id);
+                    table.PrimaryKey("PK_Role_RoleItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RoleItems_Roles_RoleId",
+                        name: "FK_Role_RoleItems_Roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
-                    Login = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true),
-                    RoleId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Users_Roles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "Roles",
+                        name: "FK_Role_RoleItems_RoleItems_RoleItemId",
+                        column: x => x.RoleItemId,
+                        principalTable: "RoleItems",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -204,6 +225,111 @@ namespace AutomationP.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "IncomingInvoices",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Date = table.Column<DateTime>(nullable: false),
+                    StorageId = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IncomingInvoices", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_IncomingInvoices_Storages_StorageId",
+                        column: x => x.StorageId,
+                        principalTable: "Storages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_IncomingInvoices_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "User_Points",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<int>(nullable: false),
+                    PointId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User_Points", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_User_Points_PointOfSales_PointId",
+                        column: x => x.PointId,
+                        principalTable: "PointOfSales",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_User_Points_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "User_Roles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<int>(nullable: false),
+                    RoleId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User_Roles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_User_Roles_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_User_Roles_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "User_Storages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<int>(nullable: false),
+                    StorageId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User_Storages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_User_Storages_Storages_StorageId",
+                        column: x => x.StorageId,
+                        principalTable: "Storages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_User_Storages_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Sales",
                 columns: table => new
                 {
@@ -228,33 +354,6 @@ namespace AutomationP.Migrations
                         name: "FK_Sales_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "IncomingInvoices",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Date = table.Column<DateTime>(nullable: false),
-                    StorageId = table.Column<int>(nullable: false),
-                    UserId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_IncomingInvoices", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_IncomingInvoices_Storages_StorageId",
-                        column: x => x.StorageId,
-                        principalTable: "Storages",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_IncomingInvoices_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -338,9 +437,14 @@ namespace AutomationP.Migrations
                 column: "ParCategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RoleItems_RoleId",
-                table: "RoleItems",
+                name: "IX_Role_RoleItems_RoleId",
+                table: "Role_RoleItems",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Role_RoleItems_RoleItemId",
+                table: "Role_RoleItems",
+                column: "RoleItemId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Roles_EnterpriseId",
@@ -363,9 +467,39 @@ namespace AutomationP.Migrations
                 column: "EnterpriseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_RoleId",
-                table: "Users",
+                name: "IX_User_Points_PointId",
+                table: "User_Points",
+                column: "PointId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_Points_UserId",
+                table: "User_Points",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_Roles_RoleId",
+                table: "User_Roles",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_Roles_UserId",
+                table: "User_Roles",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_Storages_StorageId",
+                table: "User_Storages",
+                column: "StorageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_Storages_UserId",
+                table: "User_Storages",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_EnterpriseId",
+                table: "Users",
+                column: "EnterpriseId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -377,19 +511,34 @@ namespace AutomationP.Migrations
                 name: "Point_Storages");
 
             migrationBuilder.DropTable(
-                name: "RoleItems");
+                name: "Role_RoleItems");
 
             migrationBuilder.DropTable(
                 name: "Sales");
 
             migrationBuilder.DropTable(
+                name: "User_Points");
+
+            migrationBuilder.DropTable(
+                name: "User_Roles");
+
+            migrationBuilder.DropTable(
+                name: "User_Storages");
+
+            migrationBuilder.DropTable(
                 name: "IncomingInvoices");
+
+            migrationBuilder.DropTable(
+                name: "RoleItems");
+
+            migrationBuilder.DropTable(
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "PointOfSales");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "Storages");
@@ -399,9 +548,6 @@ namespace AutomationP.Migrations
 
             migrationBuilder.DropTable(
                 name: "Categories");
-
-            migrationBuilder.DropTable(
-                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "Enterprises");

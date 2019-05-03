@@ -20,12 +20,17 @@ namespace AutomationP.Controllers
             _context = context;
         }
         // GET: Products
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(Product product1 = null)
         {
-            int id = int.Parse(User.Claims.ToList()[1].Value);
-            var pp = _context.Products.Where(p => p.ParCategory.ParentCategory.EnterpriseId == id);
+            int IdEnterprise = int.Parse(User.Claims.ToList()[1].Value);
+            Enterprise Enterprise = _context.Enterprises.Find(IdEnterprise);
+            string NameCategory = "baseCategory." + Enterprise.Name;
+            var pp = _context.Products.Where(p => p.ParCategory.ParentCategory.EnterpriseId == IdEnterprise);
            string rrr= HttpContext.Session.GetString("cater");
-            
+            var list = new SelectList(_context.Categories.Where(p => p.EnterpriseId == IdEnterprise), "Id", "Name");
+            list.First(p => p.Text == NameCategory).Text = "--Select--";
+            ViewBag.Category = list;
+            ViewBag.product = product1;
             return View(await pp.ToListAsync());
         }
 
@@ -48,7 +53,7 @@ namespace AutomationP.Controllers
         }
 
         // GET: Products/Create
-        public IActionResult Create()
+        public ActionResult Create()
         {
             int IdEnterprise = int.Parse(User.Claims.ToList()[1].Value);
             Enterprise Enterprise = _context.Enterprises.Find(IdEnterprise);
@@ -66,7 +71,7 @@ namespace AutomationP.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,VendorCode,BarCode,ParCategoryId,Units,Description,SellingPrice")] Product product)
+        public async Task<RedirectToActionResult> Create([Bind("Id,Name,VendorCode,BarCode,ParCategoryId,Units,Description,SellingPrice")] Product product)
         {
             if (ModelState.IsValid)
             {
@@ -75,7 +80,8 @@ namespace AutomationP.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(product);
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Products/Edit/5

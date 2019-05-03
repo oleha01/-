@@ -1,0 +1,69 @@
+﻿@model Product
+<div class="container rigth_panel_for_somthing incoming_invoice_create" id="rigth_panel_for_somthing">
+    <div class="rigth_panel_topLine">
+        <button type="button" class="exit_button close" onclick="$('#rigth_panel_for_somthing').removeClass('open')"> </button>
+    </div>
+    <div class="right_panel_content">
+        <form asp-action="Create">
+            <div class="row top_inputs_in_right_panel">
+                <div class="row">
+                    <div class="col-sm-4">
+
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="row row-margin-b">
+                            <div class="one_div_on_right_panel col-sm-4">
+                                <label asp-for="Name">Найменування</label>
+                                <input asp-for="Name" type="text" class="in_right_panel-lg form-control" />
+                                @*<span asp-validation-for="Name" class="text-danger"></span>*@
+                            </div>
+
+                        </div>
+                        <div class="row row-margin-b">
+                            <div class="one_div_on_right_panel col-sm-7">
+                                <label asp-for="VendorCode">Артикул</label>
+                                <input asp-for="VendorCode" type="text" class="in_right_panel form-control" />
+                                <span asp-validation-for="VendorCode" class="text-danger"></span>
+                            </div>
+                            <div class="one_div_on_right_panel col-sm-5">
+                                <label asp-for="BarCode">Штрихкод</label>
+                                <input asp-for="BarCode" type="text" class="in_right_panel-sm-sm form-control" />
+                                <span asp-validation-for="BarCode" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row row-margin-b">
+
+                            <div class="one_div_on_right_panel col-sm-7">
+                                <label asp-for="ParCategoryId">Категорія</label>
+                                <select asp-for="ParCategoryId" class="form-control in_right_panel" asp-items="ViewBag.Category"></select>
+                                <span asp-validation-for="ParCategoryId" class="text-danger"></span>
+                            </div>
+                            <div class="one_div_on_right_panel col-sm-5">
+                                <label asp-for="Units">Од.Вимірювання</label>
+                                <input asp-for="Units" type="text" class="in_right_panel-sm-sm form-control" />
+                                <span asp-validation-for="Units" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-margin-b margin-t">
+                        <div class="one_div_on_right_panel col-sm-6">
+                            <label asp-for="Description">Опис</label>
+                            <input asp-for="Description" type="text" class="in_right_panel-description form-control" />
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row row-margin-b margin-t-lg">
+                        <div class="one_div_on_right_panel col-sm-10">
+                            <label asp-for="SellingPrice">Ціна продажу</label>
+                            <input asp-for="SellingPrice" type="text" class="in_right_panel-sm form-control" />
+                            @*<span asp-validation-for="SellingPrice" class="text-danger"></span>*@
+                        </div>
+                    </div>
+                </div>
+
+               
+            </div>
+            <button type="submit" class="btn btn-success bottom_submit_in_right_panel">Створити</button>
+        </form>
+    </div>
+</div>

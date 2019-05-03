@@ -22,7 +22,7 @@ namespace AutomationP.Controllers
         public async Task<IActionResult> Index()
         {
             int id = int.Parse(User.Claims.ToList()[1].Value);
-            var productContext = _context.Users.Where(p=>p.Role.EnterpriseId==id);
+            var productContext = _context.Users.Where(p=>p.EnterpriseId==id);
             var ttt= _context.Roles.Where(p => p.EnterpriseId == id);
             var uu = ttt.ToList().Capacity;
             ViewBag.Role = ttt.ToList();

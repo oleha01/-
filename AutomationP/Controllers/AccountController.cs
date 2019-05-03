@@ -90,11 +90,27 @@ namespace AuthApp.Controllers
                     {
                         Email = model.Email,
                         Password = model.Password,
-                        RoleId = newRole.Id,
+                        EnterpriseId= newEnter.Id,
                         Login = model.EnterpriseName + ".admin"
                     };
                     db.Point_Storages.Add(point_Storage);
                     db.Users.Add(regUser);
+                    User_Role user_Role = new User_Role
+                    {
+                        UserId = regUser.Id,
+                        RoleId = newRole.Id
+                    };
+                    User_Point user_Point = new User_Point
+                    {
+                        UserId = regUser.Id,
+                        PointId=point_Storage.Id
+                    };
+                    User_Storage user_Storage = new User_Storage
+                    {
+                        UserId = regUser.Id,
+                        StorageId = baseStorage.Id
+                    };
+                    db.User_Roles.Add(user_Role);
                     Category baseCategory = new Category
                     {
                         Name = "baseCategory." + model.EnterpriseName,
@@ -119,7 +135,7 @@ namespace AuthApp.Controllers
             var claims = new List<Claim>
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, userName),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType,user.Role.EnterpriseId.ToString())
+                new Claim(ClaimsIdentity.DefaultRoleClaimType,user.EnterpriseId.ToString())
             };
             // создаем объект ClaimsIdentity
             ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
@@ -132,6 +148,8 @@ namespace AuthApp.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            HttpContext.Response.Cookies.Delete("Cart");
+            HttpContext.Response.Cookies.Delete("Product_in_InomingInvoice");
             return RedirectToAction("Login", "Account");
         }
     }
