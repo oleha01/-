@@ -1,0 +1,86 @@
+﻿@model IEnumerable<Library.Models.MoneyAndSales>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+
+    <button type="button" class="btn btn-success" id="create-button" onclick="$('#rigth_panel_for_somthing').addClass('open')">Створити</button>
+</p>
+<div class="container">
+    <div class="legend">
+        <div class="row">
+            <div class="col-sm-2">
+                Створено
+            </div>
+            <div class="col-sm-2">
+                Створив
+            </div>
+            <div class="col-sm-2">
+                Точка
+            </div>
+            <div class="col-sm-2">
+                Причина
+            </div>
+            <div class="col-sm-2">
+                Сумма
+            </div>
+            <div class="col-sm-2">
+                Коментар
+            </div>
+        </div>
+    </div>
+    @foreach (var item in Model)
+    {
+    <div class="row">
+
+        <div class="col-sm-2">
+            <div class="present-text">
+                @Html.DisplayFor(modelItem => item.Date)
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="present-text">
+                @Html.DisplayFor(modelItem => item.User.Name)
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="present-text">
+                @Html.DisplayFor(modelItem => item.PointOfSale.Name)
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="present-text">
+                @Html.DisplayFor(modelItem => item.Prychyna)
+            </div>
+        </div>
+        @{
+            string pricecolor = "";
+            if (item.Price > 0)
+            {
+                pricecolor = "text-color-green";
+            }
+            else
+            {
+                pricecolor = "text-color-red";
+            }
+
+        }
+
+        <div class="col-sm-2">
+            <div class="present-text @pricecolor ">
+                    @Html.DisplayFor(modelItem => item.Price)
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="present-text">
+                @Html.DisplayFor(modelItem => item.Coment)
+            </div>
+        </div>
+    </div>
+
+            }
+        </div>

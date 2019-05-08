@@ -4,14 +4,16 @@ using Library.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AutomationP.Migrations
 {
     [DbContext(typeof(ProductContext))]
-    partial class ProductContextModelSnapshot : ModelSnapshot
+    [Migration("20190506092032_userinSales")]
+    partial class userinSales
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -96,31 +98,6 @@ namespace AutomationP.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("Invoice_Products");
-                });
-
-            modelBuilder.Entity("Library.Models.Money", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Coment");
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<int>("PointId");
-
-                    b.Property<int>("Price");
-
-                    b.Property<int>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PointId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Money");
                 });
 
             modelBuilder.Entity("Library.Models.Point_Storage", b =>
@@ -246,42 +223,23 @@ namespace AutomationP.Migrations
 
                     b.Property<int>("PointOfSaleId");
 
+                    b.Property<int>("Price");
+
+                    b.Property<int>("ProductId");
+
+                    b.Property<int>("Quantity");
+
                     b.Property<int>("UserId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PointOfSaleId");
 
+                    b.HasIndex("ProductId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Sales");
-                });
-
-            modelBuilder.Entity("Library.Models.Sales_Product", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Count");
-
-                    b.Property<int>("Price");
-
-                    b.Property<int>("ProductId");
-
-                    b.Property<int>("SaleId");
-
-                    b.Property<int?>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("SaleId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Sales_Products");
                 });
 
             modelBuilder.Entity("Library.Models.Storage", b =>
@@ -426,19 +384,6 @@ namespace AutomationP.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("Library.Models.Money", b =>
-                {
-                    b.HasOne("Library.Models.PointOfSale", "Point")
-                        .WithMany()
-                        .HasForeignKey("PointId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Library.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
             modelBuilder.Entity("Library.Models.Point_Storage", b =>
                 {
                     b.HasOne("Library.Models.PointOfSale", "PointOfSale")
@@ -496,22 +441,9 @@ namespace AutomationP.Migrations
                         .HasForeignKey("PointOfSaleId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("Library.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("Library.Models.Sales_Product", b =>
-                {
                     b.HasOne("Library.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Library.Models.Sales", "Sale")
-                        .WithMany("Products")
-                        .HasForeignKey("SaleId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Library.Models.User", "User")

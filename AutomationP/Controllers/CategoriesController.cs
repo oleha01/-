@@ -18,8 +18,6 @@ namespace AutomationP.Controllers
         public CategoriesController(ProductContext context)
         {
             _context = context;
-
-            
         }
 
         // GET: Categories
@@ -28,6 +26,9 @@ namespace AutomationP.Controllers
             int IdEnterprise = int.Parse(User.Claims.ToList()[1].Value);
             Enterprise Enterprise = _context.Enterprises.Find(IdEnterprise);
             string NameCategory = "baseCategory." + Enterprise.Name;
+            var listCateg = new SelectList(_context.Categories.Where(p => p.EnterpriseId == IdEnterprise), "Id", "Name");
+            listCateg.First(p => p.Text == NameCategory).Text = "--Select--";
+            ViewBag.ParCateg = listCateg;
             var productContext = _context.Categories.Where(p => p.EnterpriseId == IdEnterprise && p.Name != NameCategory);
             var list = await productContext.ToListAsync();
            var listik= list.Where(p => p.ParentCategory.Name == NameCategory);
@@ -35,7 +36,10 @@ namespace AutomationP.Controllers
             {
                 el.ParentCategory.Name = "";
             }
-            
+
+          
+
+            ViewBag.category = new Category();
             HttpContext.Session.SetString("cater","tty" );
             return View(list);
         }
@@ -82,19 +86,19 @@ namespace AutomationP.Controllers
             {
                 int IdEnterprise = int.Parse(User.Claims.ToList()[1].Value);
                 Enterprise Enterprise = _context.Enterprises.Find(IdEnterprise);
-                string NameCategory = "baseCategory." + Enterprise.Name;
+                //string NameCategory = "baseCategory." + Enterprise.Name;
                 parCategory.EnterpriseId = IdEnterprise;
-                if (parCategory.ParentCategoryId == 0)
-                {
-                    _context.Categories.First(p => p.Name == NameCategory);
-                    parCategory.ParentCategoryId = _context.Categories.First(p => p.Name == NameCategory).Id;
-                }
+                //if (parCategory.ParentCategoryId == 0)
+                //{
+                //    _context.Categories.First(p => p.Name == NameCategory);
+                //    parCategory.ParentCategoryId = _context.Categories.First(p => p.Name == NameCategory).Id;
+                //}
+
                 _context.Add(parCategory);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+               
             }
-            ViewData["ParentCategoryId"] = new SelectList(_context.Categories, "Id", "Id", parCategory.ParentCategoryId);
-            return View(parCategory);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Categories/Edit/5

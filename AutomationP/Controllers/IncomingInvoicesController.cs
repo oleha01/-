@@ -22,6 +22,7 @@ namespace AutomationP.Controllers
         public RedirectToActionResult CreateIncomingInvoice([Bind("Id,Date,StorageId")] IncomingInvoice incomingInvoice)
         {
             CartClassForInvoice cartClassForInvoice = new CartClassForInvoice("Product_in_InomingInvoice", _context, HttpContext);
+            incomingInvoice.Date = DateTime.Now;
             incomingInvoice.UserId = _context.Users.FirstOrDefault(s => s.Login == User.Identity.Name).Id;
             _context.IncomingInvoices.Add(incomingInvoice);
             _context.SaveChanges();

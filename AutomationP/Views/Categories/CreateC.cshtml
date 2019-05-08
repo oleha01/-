@@ -1,0 +1,28 @@
+﻿@model Category
+<div id="cart_check_confirm_buy_background" class="cart_check_confirm_buy_background hidden">
+
+</div>
+<div class="create_categ hidden" id="create_categ">
+    <div class="top_line">
+        <button type="button" class="exit_button close" onclick="$('#cart_check_confirm_buy_background').addClass('hidden');$('#create_categ').addClass('hidden');"> </button>
+
+    </div>
+    <div class="create-categ-content">
+         <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group ">
+                <label asp-for="Name" class="control-label">Назва</label>
+                <input asp-for="Name" class="form-control form-item-category" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ParentCategoryId">Категорія</label>
+                <select asp-for="ParentCategoryId" class="form-control" asp-items="ViewBag.ParCateg"></select>
+                <span asp-validation-for="ParentCategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>

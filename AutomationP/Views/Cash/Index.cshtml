@@ -24,11 +24,11 @@
 
     @if (ViewBag.Points == null)
     {
-        Html.Partial("CashPartialView");
+        @Html.Partial("CashPartialView");
     }
     else
     {
-        Html.Partial("SelectPoint");
+        @Html.Partial("SelectPoint");
     }
    
 

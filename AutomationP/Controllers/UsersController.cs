@@ -55,13 +55,13 @@ namespace AutomationP.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,LastName,Patronymic,Name,Login,Email,Password")] User user, string textboxStorageForCheck, string textboxRoleForCheck, string textboxPointForCheck)
+        public async Task<IActionResult> Create([Bind("LastName,Patronymic,Name,Login,Email,Password")] User user, string textboxStorageForCheck, string textboxRoleForCheck, string textboxPointForCheck)
         {
             if (ModelState.IsValid)
             {
                 int id = int.Parse(User.Claims.ToList()[1].Value);
                 var enter = _context.Enterprises.Find(id);
-
+                user.EnterpriseId = id;
                 var Roles = _context.Roles.Where(p => p.EnterpriseId == id).ToList();
                 var Storages = _context.Storages.Where(p => p.EnterpriseId == id).ToList();
                 var Points = _context.PointOfSales.Where(p => p.EnterpriseId == id).ToList();
@@ -69,7 +69,9 @@ namespace AutomationP.Controllers
                 List<Role> UsingRole = new List<Role>();
                 List<PointOfSale> UsingPoint= new List<PointOfSale>();
                 List<Storage> UsingStorage = new List<Storage>();
-
+                user.Login = enter.Name + "." + user.Login;
+                _context.Add(user);
+                await _context.SaveChangesAsync();
                 for (int i = 0; i < textboxStorageForCheck.Length; i++)
                 {
                     if (textboxStorageForCheck[i] == '1')
@@ -95,7 +97,6 @@ namespace AutomationP.Controllers
                 }
 
 
-                _context.Add(user);
                 await _context.SaveChangesAsync(); 
                 return RedirectToAction(nameof(Index));
             }

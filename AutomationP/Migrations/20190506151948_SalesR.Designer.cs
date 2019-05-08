@@ -4,14 +4,16 @@ using Library.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AutomationP.Migrations
 {
     [DbContext(typeof(ProductContext))]
-    partial class ProductContextModelSnapshot : ModelSnapshot
+    [Migration("20190506151948_SalesR")]
+    partial class SalesR
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -106,17 +108,17 @@ namespace AutomationP.Migrations
 
                     b.Property<string>("Coment");
 
-                    b.Property<DateTime>("Date");
-
-                    b.Property<int>("PointId");
+                    b.Property<DateTime>("Data");
 
                     b.Property<int>("Price");
+
+                    b.Property<int?>("SalesId");
 
                     b.Property<int>("UserId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PointId");
+                    b.HasIndex("SalesId");
 
                     b.HasIndex("UserId");
 
@@ -271,15 +273,11 @@ namespace AutomationP.Migrations
 
                     b.Property<int>("SaleId");
 
-                    b.Property<int?>("UserId");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
 
                     b.HasIndex("SaleId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Sales_Products");
                 });
@@ -428,9 +426,9 @@ namespace AutomationP.Migrations
 
             modelBuilder.Entity("Library.Models.Money", b =>
                 {
-                    b.HasOne("Library.Models.PointOfSale", "Point")
+                    b.HasOne("Library.Models.Sales", "Sales")
                         .WithMany()
-                        .HasForeignKey("PointId")
+                        .HasForeignKey("SalesId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Library.Models.User", "User")
@@ -510,13 +508,8 @@ namespace AutomationP.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Library.Models.Sales", "Sale")
-                        .WithMany("Products")
-                        .HasForeignKey("SaleId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Library.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("SaleId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

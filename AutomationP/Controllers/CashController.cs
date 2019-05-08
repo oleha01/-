@@ -25,9 +25,15 @@ namespace AutomationP.Controllers
         {
             CartClass cartClass = new CartClass("Cart", _context, HttpContext);
             var carts = cartClass.GetCart().Lines;
-            foreach(var el in carts)
+            int pointId = int.Parse( HttpContext.Request.Cookies["BasePoint"]);
+            User user = _context.Users.FirstOrDefault(s => s.Login == User.Identity.Name);
+            Sales newSale = new Sales { Date=DateTime.Now,PointOfSaleId=pointId,UserId=user.Id};
+            _context.Sales.Add(newSale);
+            _context.SaveChanges();
+            foreach (var el in carts)
             {
-                _context.Sales.Add(new Sales { ProductId = el.Product.Id, Quantity = el.Quantity, Price = el.Product.SellingPrice });
+                _context.Sales_Products.Add(new Sales_Product {SaleId=newSale.Id,ProductId=el.Product.Id,Price=el.Product.SellingPrice,Count=el.Quantity });
+                    //Add(new Sales { ProductId = el.Product.Id, Quantity = el.Quantity, Price = el.Product.SellingPrice, PointOfSaleId= pointId,Date=DateTime.Now,UserId=user.Id });
             }
             cartClass.Clear();
             _context.SaveChanges();
@@ -39,12 +45,25 @@ namespace AutomationP.Controllers
         {
             
             int id = int.Parse(User.Claims.ToList()[1].Value);
-            var enter = _context.Enterprises.Find(id);
-            var NameCategory = "baseCategory." + enter.Name;
+            Enterprise Enterprise = _context.Enterprises.Find(id);
+            var NameCategory = "baseCategory." + Enterprise.Name;
             string pointId = HttpContext.Request.Cookies["BasePoint"];
+          
             if (pointId == null)
             {
+                User user = _context.Users.FirstOrDefault(s => s.Login == User.Identity.Name);
+               if(_context.User_Roles.Where(p=> p.UserId==user.Id && p.Role.Name=="admin")!=null)
                 ViewBag.Points = _context.PointOfSales.Where(p => p.EnterpriseId == id);
+                else
+                {
+                   var user_point = _context.User_Points.Where(p => p.UserId == user.Id).ToList();
+                    int[] arrP = new int[user_point.Count];
+                    for(int i=0;i< user_point.Count;i++)
+                    {
+                        arrP[i] = user_point[i].PointId;
+                    }
+                    ViewBag.Points = _context.PointOfSales.Find(arrP);
+                }
                 return View();
             }
             var categories = _context.Categories.Where(p => p.EnterpriseId == id && p.ParentCategory.Name == NameCategory).ToList();
@@ -56,13 +75,29 @@ namespace AutomationP.Controllers
             ViewBag.Cart = cartClass.GetCart().Lines ;
             return View();
         }
-        public RedirectToActionResult SelectPoint()
+        public RedirectToActionResult SelectPoint(int Id)
         {
             int IdEnterprise = int.Parse(User.Claims.ToList()[1].Value);
             Enterprise Enterprise = _context.Enterprises.Find(IdEnterprise);
             User user= _context.Users.FirstOrDefault(s => s.Login == User.Identity.Name);
-            //  _context.PointOfSales.Where(p=>p.EnterpriseId==IdEnterprise && user.Role.
-            return RedirectToAction("Index");
+            
+            if (_context.User_Roles.Where(p => p.UserId == user.Id && p.Role.Name == "admin") != null)
+            {
+                if (_context.PointOfSales.Find(Id).EnterpriseId == IdEnterprise)
+                {
+                    HttpContext.Response.Cookies.Append("BasePoint", Id.ToString());
+                }
+                else
+                    throw new Exception();
+            }
+            else
+            {
+                if (_context.User_Points.Where(p => p.UserId == user.Id && p.PointId == Id) != null)
+                {
+                    HttpContext.Response.Cookies.Append("BasePoint", Id.ToString());
+                }
+            }
+                return RedirectToAction("Index");
         }
 
         public ActionResult Category(int Id)
@@ -70,7 +105,25 @@ namespace AutomationP.Controllers
             int IdEnterprise = int.Parse(User.Claims.ToList()[1].Value);
             Enterprise Enterprise = _context.Enterprises.Find(IdEnterprise);
             string NameCategory = "baseCategory." + Enterprise.Name;
+            string pointId = HttpContext.Request.Cookies["BasePoint"];
 
+            if (pointId == null)
+            {
+                User user = _context.Users.FirstOrDefault(s => s.Login == User.Identity.Name);
+                if (_context.User_Roles.Where(p => p.UserId == user.Id && p.Role.Name == "admin") != null)
+                    ViewBag.Points = _context.PointOfSales.Where(p => p.EnterpriseId == IdEnterprise);
+                else
+                {
+                    var user_point = _context.User_Points.Where(p => p.UserId == user.Id).ToList();
+                    int[] arrP = new int[user_point.Count];
+                    for (int i = 0; i < user_point.Count; i++)
+                    {
+                        arrP[i] = user_point[i].PointId;
+                    }
+                    ViewBag.Points = _context.PointOfSales.Find(arrP);
+                }
+                return View();
+            }
             var cat1 = _context.Categories.Find(Id);
             if (cat1.Name == NameCategory)
                return RedirectToAction("Index","Cash");

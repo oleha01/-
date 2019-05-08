@@ -27,9 +27,11 @@ namespace AutomationP.Controllers
             string NameCategory = "baseCategory." + Enterprise.Name;
             var pp = _context.Products.Where(p => p.ParCategory.ParentCategory.EnterpriseId == IdEnterprise);
            string rrr= HttpContext.Session.GetString("cater");
-            var list = new SelectList(_context.Categories.Where(p => p.EnterpriseId == IdEnterprise), "Id", "Name");
-            list.First(p => p.Text == NameCategory).Text = "--Select--";
-            ViewBag.Category = list;
+
+            var listCateg = new SelectList(_context.Categories.Where(p => p.EnterpriseId == IdEnterprise), "Id", "Name");
+            listCateg.First(p => p.Text == NameCategory).Text = "--Select--";
+            ViewBag.Category = listCateg;
+
             ViewBag.product = product1;
             return View(await pp.ToListAsync());
         }

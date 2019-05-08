@@ -7,35 +7,42 @@
 <h2>Index</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+
+    <button type="button" class="btn btn-success" id="create-button" onclick="$('#cart_check_confirm_buy_background').removeClass('hidden');$('#create_categ').removeClass('hidden');">Створити</button>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ParentCategory)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ParentCategory.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="container">
+    <div class="legend">
+        <div class="row">
+            <div class="col-sm-6">
+                Назва
+            </div>
+            <div class="col-sm-6">
+                Дочірня категорія
+            </div>
+        </div>
+    </div>
+    @foreach (var item in Model)
+    {
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="present-text">
+                    @Html.DisplayFor(modelItem => item.Name)
+                </div>
+
+            </div>
+            <div class="col-sm-6">
+                <div class="present-text">
+                    @if (item.ParentCategory != null)
+                    {
+                    @Html.DisplayFor(modelItem => item.ParentCategory.Name)
+                    }
+                </div>
+
+            </div>
+         
+        </div>
+
+    }
+</div>
+
+@await Html.PartialAsync("CreateC", ViewBag.category as Product)

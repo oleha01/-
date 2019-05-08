@@ -4,7 +4,7 @@
     ViewData["Title"] = "Товари і послуги";
 }
 
-<h2>Товари і послуги</h2>
+<div>Товари і послуги</div>
 
 <p>
  
@@ -16,8 +16,11 @@
             <div class="col-sm-4">
                 Найменування
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 Категорія
+            </div>
+            <div class="col-sm-3">
+                Од.
             </div>
             <div class="col-sm-2">
                 Ціна
@@ -26,33 +29,39 @@
     </div>
     @foreach (var item in Model)
     {
-        <div class="row">
-            <div class="col-sm-4">
-                <img src="~/images/noImage.png" />
-                <div class="present-text">
-                    <a asp-action="Details" asp-route-id="@item.Id">
-                        @Html.DisplayFor(modelItem => item.Name)
+    <div class="row">
+        <div class="col-sm-4">
+            <img src="~/images/noImage.png" />
+            <div class="present-text">
+                <a asp-action="Details" asp-route-id="@item.Id">
+                    @Html.DisplayFor(modelItem => item.Name)
 
-                    </a>
-                </div>
-                </div>
-
-
-                <div class="col-sm-4">
-                    <div class="present-text">
-                        @Html.DisplayFor(modelItem => item.ParCategory.Name)
-                    </div>
-
-                </div>
-                <div class="col-sm-2">
-                    <div class="present-text" >
-                    @Html.DisplayFor(modelItem => item.SellingPrice)
-                </div>
-
-                </div>
+                </a>
+            </div>
         </div>
+
+
+        <div class="col-sm-3">
+            <div class="present-text">
+                @Html.DisplayFor(modelItem => item.ParCategory.Name)
+            </div>
+
+        </div>
+        <div class="col-sm-3">
+            <div class="present-text">
+                @Html.DisplayFor(modelItem => item.Units)
+            </div>
+
+        </div>
+        <div class="col-sm-2">
+            <div class="present-text">
+                @Html.DisplayFor(modelItem => item.SellingPrice)
+            </div>
+
+        </div>
+    </div>
        
     }
 </div>
 
-@await Html.PartialAsync("CreateR",ViewBag.product as Product)
+@await Html.PartialAsync("CreateP",ViewBag.product as Product)

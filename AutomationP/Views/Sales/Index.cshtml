@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Library.Models.Sales>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<div class="container">
+    <div class="legend">
+        <div class="row">
+            <div class="col-sm-3">
+                Створено
+            </div>
+            <div class="col-sm-2">
+                Створив
+            </div>
+            <div class="col-sm-2">
+                Точка
+            </div>
+            <div class="col-sm-3">
+                Позиція
+            </div>
+            <div class="col-sm-2">
+                Сумма
+            </div>
+
+        </div>
+    </div>
+    @foreach (var item in Model)
+    {
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="present-text">
+                    @Html.DisplayFor(modelItem => item.Date)
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="present-text">
+                    @Html.DisplayFor(modelItem => item.User.Name)
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="present-text">
+                    @Html.DisplayFor(modelItem => item.PointOfSale.Name)
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="present-text">
+                    @{string prodS = "";
+                        int summ = 0;
+                        foreach(var el in item.Products)
+                        {
+                            prodS += el.Product.Name + " x " + el.Count;
+                            summ += el.Count * el.Price;
+                        }
+                        }
+                    @prodS
+                        
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="present-text">
+                    @summ
+                </div>
+            </div>
+        </div>
+
+    }
+</div>

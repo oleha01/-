@@ -283,12 +283,7 @@ body {
 #cash-href:hover {
     text-decoration: none;
 }
-.div-cash {
-    margin-top:40px;
-   
-    justify-items: center;
-    align-items: center;
-}
+
 
 .menu-header {
     background: linear-gradient(101.56deg,#20a7da,#244eb7);
@@ -307,15 +302,17 @@ body {
 }
 
 .container {
-   
+   margin:10px;
+   padding:0px;
 }
 
 .row {
     background: #fff;
     text-align:center;
-    height:52px;
+   min-height:52px;
  margin:0;
  padding:0;
+ width:100%;
 }
     .row img {
 
@@ -350,6 +347,7 @@ body {
     margin: 5px;
     border-radius:3px;
     height:70px;
+    min-width:100px;
     padding:0;
    font-size:1.25rem;
 }
@@ -379,14 +377,17 @@ body {
 
 .cash-product {
     background: none;
+    background-color:white;
     margin: 5px;
     color:none;
     border-radius: 10px;
     border:solid 4px;
-    border-color:red;
-    height: 70px;
-    padding: 0;
+
+    height: 110px;
+   padding-top:15px;
     font-size: 1.25rem;
+    min-width:90px;
+    max-width:120px;
 }
 
 #cash-href-product {
@@ -480,13 +481,13 @@ body {
 
 .rigth_panel_for_somthing {
     position: fixed;
-    right: -600px;
+    right: -630px;
     top: 50px;
     bottom: 0px;
-    min-height: 84vh;
+    min-height: 550px;
     width: 600px;
     background-color: #fff;
-    padding-left: 15px;
+    
     transition-property: right;
     transition-duration: .2s;
     box-shadow: 0 0 4px rgba(0,0,0,.25);
@@ -501,6 +502,8 @@ body {
 }
 .right_panel_content {
     display:grid;
+    padding-left:15px;
+    padding-right:15px;
 }
 
 .top_inputs_in_right_panel {
@@ -665,7 +668,8 @@ body {
 
 }
 .incCreate{
-
+    
+    
 }
 .topLine {
     height:30px;
@@ -677,6 +681,7 @@ body {
     border-right:5px solid;
     min-height:600px;
     min-width:451px;
+    margin-right:-20px;
 }
 .border-bottom {
     border-bottom:2px solid;
@@ -714,4 +719,51 @@ body {
     position:absolute;
     bottom:15px;
  left:26px;
+}
+
+.main-head {
+    position:fixed;
+    top:0px;
+    height:50px;
+    min-width:100%;
+    background-color:white;
+}
+
+.create_categ {
+    position:fixed;
+    top:50%;
+    left:50%;
+    margin-top:-150px;
+    margin-left:-250px;
+    min-width:500px;
+    min-height:300px;
+    background-color:white;
+    z-index:21;
+}
+.top_line {
+    min-height: 45px;
+    background: #332c38;
+    margin-bottom: 20px;
+    padding-left:;
+}
+.form-item-category {
+    margin-left:auto;
+    margin-right:auto;
+}
+.create-categ-content {
+    padding-left:20px;
+    padding-right:20px;
+}
+.div-cash {
+    margin-top: 40px;
+    padding-right: 450px;
+    justify-items: center;
+    justify-content:center;
+    align-items: center;
+}
+.text-color-green {
+    color: green;
+}
+.text-color-red {
+    color: red;
 }

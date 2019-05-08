@@ -150,6 +150,7 @@ namespace AuthApp.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.Response.Cookies.Delete("Cart");
             HttpContext.Response.Cookies.Delete("Product_in_InomingInvoice");
+            HttpContext.Response.Cookies.Delete("BasePoint");
             return RedirectToAction("Login", "Account");
         }
     }
