@@ -8,7 +8,9 @@
 
 <p>
 
-    <button type="button" class="btn btn-success" id="create-button" onclick="$('#rigth_panel_for_somthing').addClass('open')">Створити</button>
+    <button type="button" class="btn btn-success" id="pryhid-btn" onclick="$('#cart_check_confirm_buy_background').removeClass('hidden');$('#create_categ').removeClass('hidden');">Створити прихід</button>
+    <button type="button" class="btn btn-danger" id="pryhid-btn" onclick="$('#cart_check_confirm_buy_background').removeClass('hidden');$('#create_categ1').removeClass('hidden');">Створити розхід</button>
+
 </p>
 <div class="container">
     <div class="legend">
@@ -84,3 +86,4 @@
 
             }
         </div>
+@Html.Partial("CreateM",new Money())

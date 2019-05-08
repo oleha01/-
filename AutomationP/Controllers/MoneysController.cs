@@ -21,7 +21,9 @@ namespace AutomationP.Controllers
         // GET: Moneys
         public async Task<IActionResult> Index()
         {
-            int id = int.Parse(User.Claims.ToList()[1].Value);
+            int IdEnterprise = int.Parse(User.Claims.ToList()[1].Value);
+            Enterprise Enterprise = _context.Enterprises.Find(IdEnterprise);
+            string NameCategory = "baseCategory." + Enterprise.Name;
             var productContext = _context.Money.Include(m => m.Point).Include(m => m.User);
             List<MoneyAndSales> money = new List<MoneyAndSales>();
             foreach(var el in productContext)
@@ -29,7 +31,7 @@ namespace AutomationP.Controllers
            
                 money.Add(new MoneyAndSales { Date=el.Date,User=el.User,PointOfSale=el.Point,Price=el.Price,Coment=el.Coment,Prychyna="Інше"});
             }
-            var Sales = _context.Sales.Where(p => p.PointOfSale.EnterpriseId == id);
+            var Sales = _context.Sales.Where(p => p.PointOfSale.EnterpriseId == IdEnterprise);
             foreach(var el in Sales)
             {
                 var Prod =_context.Sales_Products.Where(p => p.SaleId == el.Id);
@@ -40,7 +42,9 @@ namespace AutomationP.Controllers
                 }
                 money.Add(new MoneyAndSales { Date = el.Date, User = el.User, PointOfSale = el.PointOfSale, Price = summ, Coment = "", Prychyna = "Продажа" });
             }
-            money.Sort((p1,p2) => { if (p1.Date > p2.Date) return 1; if (p1.Date < p2.Date) return -1; return 0; });
+            money.Sort((p1,p2) => { if (p1.Date > p2.Date) return -1; if (p1.Date < p2.Date) return 1; return 0; });
+         
+            ViewBag.PointSelect =new SelectList( _context.PointOfSales.Where(p=>p.EnterpriseId==IdEnterprise),"Id","Name");
             return View(money);
         }
 
@@ -81,13 +85,32 @@ namespace AutomationP.Controllers
         {
             if (ModelState.IsValid)
             {
+                money.Date = DateTime.Now;
+                money.UserId = _context.Users.First(p => p.Login == User.Identity.Name).Id;
                 _context.Add(money);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PointId"] = new SelectList(_context.PointOfSales, "Id", "Id", money.PointId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", money.UserId);
-            return View(money);
+            /* ViewData["PointId"] = new SelectList(_context.PointOfSales, "Id", "Id", money.PointId);
+             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", money.UserId);
+             return View(money);*/
+            return RedirectToAction(nameof(Index));
+        }
+        public async Task<IActionResult> CreateR([Bind("Id,PointId,Data,UserId,Price,Coment")] Money money)
+        {
+            if (ModelState.IsValid)
+            {
+                money.Date = DateTime.Now;
+                money.UserId = _context.Users.First(p => p.Login == User.Identity.Name).Id;
+                money.Price *= -1;
+                _context.Add(money);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            /* ViewData["PointId"] = new SelectList(_context.PointOfSales, "Id", "Id", money.PointId);
+             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", money.UserId);
+             return View(money);*/
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Moneys/Edit/5
